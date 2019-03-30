@@ -1,0 +1,40 @@
+{% extends 'superAdmin/base.html.twig' %}
+{% block body %}
+
+
+
+    <div class="col-lg-8 col-md-12 col-sm-12 col-12 ml-md-1 ml-sm-1  mx-0 p-0 mt-lg-0 mt-md-0 mt-sm-5 mt-5 row ">
+        <div class="table col-12  mh-25" id="teamLeadership-container ">
+            <table class="table table-striped table-bordered col-12 "  style="margin-bottom: 0; padding:0">
+                <tr class="row col-12 p-0 m-0 bg-success">
+                    <th class="col-1"></th>
+                    <th class="col-4">Име</th>
+                    <th class="col-1">ИМ</th>
+                    <th class="col-1">П</th>
+                    <th class="col-1">Р</th>
+                    <th class="col-1">З</th>
+                    <th class="col-1">ВГ</th>
+                    <th class="col-1">ДГ</th>
+                    <th class="col-1">Т</th>
+                </tr>
+                {% set rowNum = 1 %}
+                {% for team in division.Teams %}
+                        <tr class="teamTable row col-12 p-0 m-0 ">
+                            <th  class="col-1 justify-content-end"> {{ rowNum }}</th>
+                            <th class="col-4"> {{ team.name }}</th>
+                            <th class="col-1"> {{ team.playedGames }}</th>
+                            <th class="col-1"> {{ team.wins }}</th>
+                            <th class="col-1"> {{ team.drawsGames}}</th>
+                            <th class="col-1"> {{ team.lostGames}}</th>
+                            <th class="col-1"> {{ team.Goals}}</th>
+                            <th class="col-1"> {{ team.GoalsInTheTeamDoor}}</th>
+                            <th class="col-1">{{ team.points }}</th>
+                        </tr>
+                    {% set rowNum = rowNum + 1 %}
+                {% else %}
+                    <li><em>Това първенство няма отбори</em></li>
+                {%  endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock%}

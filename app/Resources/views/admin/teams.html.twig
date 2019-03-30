@@ -1,0 +1,149 @@
+{% extends 'admin/base.html.twig' %}
+ {% block nav %}
+     <a class="nav-item nav-link   ml-2" href="{{ path("adminHomeAction") }}">Начална страница </a>
+     <a class="nav-item nav-link current-item ml-2 " href="{{ path("youthTeams") }}">Юнушестки отбори</a>
+
+ {% endblock  %}
+
+{%  block body %}
+    <div class="container justify-content-center mx-auto text-center row">
+        <div class="col-12 row justify-content-center p-3 justify-content-lg-between">
+        {% if youthTeams == null or youthTeams == '' %}
+
+
+        {% else %}
+
+            {% for youthTeam in youthTeams %}
+
+                    <div class="col-lg-6 col-sm-12 col-md-12 justify-content-center player_portfolio row ">
+                        <div class="col-12   youthTeam-container  " >
+                            <a href="{{ path('youthTeam',{id : youthTeam.Id}) }}">
+                                    <img src="{{ asset("images/footballWall.jpg") }}" class="img-youthTeam" alt="">
+                                <h1 class="youthTeam-text">{{ youthTeam.Name}}</h1>
+                                <h5 class="trainer_info">
+                                    Треньори:
+                                    {% if youthTeam.Coaches|length == 0 %}
+                                        Няма
+                                    {% else %}
+                                        {{ youthTeam.Coaches|length }}
+
+                                    {% endif %}
+                                </h5>
+                                <h5 class="player_info">Играчи: {{ youthTeam.Players|length }}</h5>
+                            </a>
+                            <span><i class="fas fa-times country-fa-times youthTeam-delete" id="{{ youthTeam.Id }}"></i></span>
+                        </div>
+                    </div>
+
+
+            {% endfor %}
+
+
+        {% endif %}
+            <div class="col-lg-4 col-sm-12 col-md-12 justify-content-center player_portfolio row ">
+                <div class="col-12 player-container add-team add-coache justify-content-center text-center" id="player- ">
+
+                    <img src="{{ asset('images/plus .png') }}" alt="" class="add-player-img">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="player-status-container row justify-content-center align-items-center">
+        <div class="col-lg-9 col-sm-10 player-status-div row align-items-center justify-content-center" id="add-player" >
+
+            <div class="col-lg-8 col-sm-11 row justify-content-center">
+                <div class="input-group mb-3 col-lg-12 col-sm-12">
+                    <h2 class="mb-5 col-12 text-center justify-content-center">Добавяне на  юнушестки отбор</h2>
+                    <input class="effect-2 bg-gray name" type="text"  placeholder="Име..." id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                    <span class="focus-border"></span>
+                </div>
+
+                <div class="input-group mb-3 col-lg-12 col-sm-12">
+                    <select class="form-control select bg-gray col-sm-12 " id="division" >
+                        <option value="0" selected="selected" disabled="disabled" class="bg-gray">Защо няма да може да доидете </option>
+                        {% for division in divisions %}
+                            <option value="{{ division.Id }}" selected="selected"  class="bg-gray">{{ division.Name  }} ({{ division.Age }}) </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button class="btn bg-mycolor" id="send-info">Потвърди</button>
+
+            </div>
+
+
+            <span><i class="fas fa-times-circle"></i></span>
+        </div>
+    </div>
+    <script>
+        $('.add-team').on('click', function () {
+            var player = $(this).children().attr('id');
+            $('.player-status-container').css('visibility', 'visible');
+            $('.player-status-div').css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.player-status-container').css('visibility', 'hidden');
+                $('.player-status-div').css('visibility', 'hidden');
+            });
+        });
+
+        $('.add-team').on('click', function () {
+            var player = $(this).children().attr('id');
+            $('.coache-status-container').css('visibility', 'visible');
+            $('.coache-status-div').css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.coache-status-container').css('visibility', 'hidden');
+                $('.coache-status-div').css('visibility', 'hidden');
+            });
+        });
+
+
+        $(".name").inputmask("Regex", {
+            regex:'[A-Z][a-z]+\ [1-9]+' ,
+            alias: "string",
+            clearIncomplete: true
+        });
+
+
+        $('#send-info').on('click', function () {
+            var name = $('.name').val();
+            var division = $('#division').val();
+
+            if (division != 0 && name.length > 4) {
+                $.ajax({
+                    method: "POST",
+                    data: {"name": name, "division": division},
+                    url: "{{ path("createYouthTeam") }}",
+                })
+                    .done(function( msg ) {
+                        window.location.href = "{{ path("youthTeams") }}";
+                    });
+
+             }else{
+
+            }
+        });
+
+        $('.youthTeam-delete').on('click', function () {
+            var id = $(this).attr('id');
+            $.ajax({
+                method: "POST",
+                url: "app.php/admin/deleteYouthTeam/" + id,
+            })
+                .done(function( msg ) {
+                    window.location.href = "{{ path("youthTeams") }}";
+                });
+
+           });
+
+
+
+
+    </script>
+{% endblock %}

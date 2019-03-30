@@ -1,0 +1,89 @@
+
+{% extends 'security/baseSecurity.html.twig'%}
+
+{% block link %}
+    <link rel="stylesheet" href="{{ asset('css/loginPage.css') }}" />
+    <link rel="stylesheet" href=" {{ asset("css/progressBar.css") }}">
+
+{% endblock %}
+
+{% block body %}
+  <div class="container text-center col-lg-4 col-md-6 col-sm-9 mt-5 form">
+      <p class="bg-danger p-3 p-signUpError text-center mx-0 color-white" id="email-error">Този емайл вече е регистриран</p>
+      <p class="bg-danger p-3 p-signUpError text-center  justify-content-center  mx-0 color-white" id="phone-error">Този този телефон вече е регистриран</p>
+  </div>
+
+    <div  class="container text-center col-lg-4 col-md-6 col-sm-9 mt-5 form" >
+        <div class="container text-center mt-5" >
+            <div class="input-group mb-4">
+                <input class="effect-2 " type="text" placeholder="Имейл адрес" id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                <span class="focus-border"></span>
+            </div>
+            <div class="input-group mb-4">
+                <input class="effect-2 " type="text" placeholder="Парала" id="pass" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                <span class="focus-border"></span>
+            </div>
+
+            <div class="input-group mb-4">
+                <input class="effect-2 " type="password" placeholder="Телефонен номер" id="phone" aria-label="Name" aria-describedby="basic-addon1" name="_password">
+                <span class="focus-border"></span>
+            </div>
+        </div>
+        <p id="result"></p>
+        <div class="col-6 mx-auto mt-5">
+            <button class="btn btn-primary col-12 btn-submit" type="submit" id="btn">Sign In</button >
+        </div>
+    </div>
+{% endblock %}
+
+        {% block javascripts %}
+            <script>
+                function validateEmail(email) {
+                    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email);
+                }
+
+                function validate() {
+                    var $result = $("#result");
+                    var email = $("#email").val();
+                    $result.text("");
+
+                    if (validateEmail(email)) {
+                       return 1;
+                    } else {
+                        return 0;
+                    }
+
+                }
+
+                $(".btn").bind("click", function () {
+                    var validation = validate();
+                    var email = $("#email").val();
+                    var pass = $("#pass").val();
+                    var phone = $("#phone").val();
+                    if(validation == 1){
+                        $.ajax({
+                            method: "POST",
+                            data: {"pass":  pass, "email":  email, "phone":  phone, },
+                            url: "{{ path("signUp_pageAction") }}",
+                        })
+                            .done(function( msg ) {
+                                if(msg == 3){
+                                    $("#email-error").css("visibility", "visible");
+                                }
+                                if(msg == 4){
+                                    $("#phone-error").css("visibility", "visible");
+                                }
+
+                                console.log(msg);
+                            });
+                    }else{
+                        console.log("is not valid")
+                    }
+                });
+
+            </script>
+        {% endblock %}
+
+
+

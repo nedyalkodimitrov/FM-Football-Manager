@@ -1,0 +1,58 @@
+
+{% extends 'coaches/base.html.twig' %}
+{% block body %}
+    <div id="container ">
+        <div class="row mt-5  justify-content-center">
+            <div class="col-lg-11 col-md-7 col-sm-11 col-10  div-charts row pb-3">
+                <div class="col-12 text-center mt-4">
+                    <h2 >Основни характеристики</h2>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
+                    <p > {{ playersCount }}</p>
+                    <div class="fat-percent-div">
+                        <h3>
+                            <span class="label green badge fat-percent-badge">Играча в отбора</span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
+                    <p > 8 <i class="fa fa-cup" aria-hidden="true"></i></p>
+                    <div class="fat-percent-div">
+                        <h3>
+                            <span class="label green badge fat-percent-badge">Временно класиране</span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
+                    <p> А група </p>
+                    <div class="fat-percent-div">
+                        <h3>
+                            <span class="label green badge fat-percent-badge">Първенство</span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        $('.player_portfolio').on('click', function () {
+
+            var player = $(this).children().attr('id');
+            $('.player-status-container').css('visibility', 'visible');
+            $('#status-'+player).css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.player-status-container').css('visibility', 'hidden');
+                $('#status-'+player).css('visibility', 'hidden');
+            });
+
+            $('.player-status-container').on('click', function () {
+                $('.player-status-container').css('visibility', 'hidden');
+                $('#status-'+player).css('visibility', 'hidden');
+            });
+        });
+    </script>
+{% endblock %}

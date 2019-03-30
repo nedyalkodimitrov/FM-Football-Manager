@@ -1,0 +1,30 @@
+.training-container{
+    margin-top: 3rem;
+    width: 100%;
+    background-color: black;
+}
+
+
+.training-images{
+    width: 100%;
+    max-widtht: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    opacity: 0.5;
+    cursor: pointer;
+}
+.training-images:hover {
+    opacity: 0.7;
+
+
+}
+.training-p {
+    position: absolute;
+    font-size: 26px;
+    top: 0%;
+    left: -3%;
+    max-width: 60%;
+    z-index: 100;
+    color: white;
+}
+

@@ -1,0 +1,171 @@
+{% extends 'superAdmin/base.html.twig' %}
+{% block body %}
+    <div id="container ">
+        <div class="row mt-5  justify-content-center">
+            <div class="col-lg-11 col-md-7 col-sm-11 col-10  div-charts row pb-3">
+                <div class="col-12 text-center">
+                    <h2 >Основни характеристики</h2>
+                </div>
+
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
+                    <p > {{teams|length}}</p>
+                    <div class="fat-percent-div">
+                        <h3>
+                            <span class="label green badge fat-percent-badge">Отбора</span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
+                    <p> {{ users }}</p>
+                    <div class="fat-percent-div">
+                        <h3>
+                            <span class="label green badge fat-percent-badge">Потребители</span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
+                    <p> {{ divisions|length + youthDivisions|length }}</p>
+                    <div class="fat-percent-div">
+                        <h3>
+                            <span class="label green badge fat-percent-badge">Брой Първенства</span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5  justify-content-center">
+    <div class="col-lg-11 col-md-7 col-sm-11 col-10 row pb-3 justify-content-lg-center justify-content-sm-center">
+            <div class="col-lg-6 col-sm-12 col-md-12 justify-content-center player_portfolio row ">
+                <div class="col-12   youthTeam-container" >
+                    <a href="{{ path("superAdminTeamsCountry") }}">
+                        <img src="{{ asset("images/footballWall.jpg") }}" class="img-youthTeamRotate" alt="">
+                        <h1 class="youthTeam-text">
+                           Отбори
+                        </h1>
+
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+    <script>
+        $('.add-player').on('click', function () {
+            var player = $(this).children().attr('id');
+            $('.player-status-container').css('visibility', 'visible');
+            $('.player-status-div').css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.player-status-container').css('visibility', 'hidden');
+                $('.player-status-div').css('visibility', 'hidden');
+            });
+        });
+
+        $('.phone').inputmask('Regex', {
+            regex: "08([7-9])([0-9]{7})+",
+            alias: "string",
+            clearIncomplete: true
+        });
+        $(".name").inputmask("Regex", {
+            regex:'[А-Я][а-я]+' ,
+            alias: "datetime",
+            clearIncomplete: true
+        });
+        $(".fName").inputmask("Regex", {
+            regex:'[А-Я][а-я]+' ,
+            alias: "datetime",
+            clearIncomplete: true
+        });
+
+
+        $('#send-info').on('click', function () {
+            var name = $('.name').val();
+            var phone = $('.phone').val();
+            var division = $('#position').val();
+            var phone = $('.phone').val();
+
+            var namesChecker = false;
+            var positionCheker = false;
+            var  phoneCheker = false;
+
+
+            if(name.length >= 3 && fName.length >= 3 ){
+                namesChecker = true;
+            }else {
+                iziToast.warning({
+                    title: 'Грешни данни',
+                    message: "Неможе началната дата да е по-голяма от крайната",
+                    overlay: true,
+                    zindex: 999,
+                    position: 'center',
+                    timeout: 2000,
+                });
+
+            }
+
+
+            if (position != 0){
+                positionCheker = true;
+            }else {
+                iziToast.warning({
+                    title: 'Грешни данни',
+                    message: "Моля изберете позицията ,където играчът ще играе",
+                    overlay: true,
+                    zindex: 999,
+                    position: 'center',
+                    timeout: 2000,
+                });
+
+            }
+            if (phone.length == 10){
+                phoneCheker = true;
+            }else {
+                console.log(phone);
+                iziToast.warning({
+                    title: 'Грешни данни',
+                    message: "Телефона трябва да е с дължина от 10 цифри",
+                    overlay: true,
+                    zindex: 999,
+                    position: 'center',
+                    timeout: 2000,
+                });
+
+            }
+            if (phoneCheker == true && positionCheker == true && namesChecker == true){
+                $.ajax({
+                    method: "POST",
+                    data: {"appbundle_users[name]": name, "appbundle_users[fName]": fName, "position": position, "appbundle_players[phone]": phone},
+                    url: "{{ path('trainingView') }}",
+                })
+                    .done(function( msg ) {
+                        if(msg == 1){
+                            $('#position').val(0);
+                            $('.name').val('');
+                            $('.fName').val('');
+                            $('.phone').val('');
+                        }
+
+                    });
+            }else{
+                iziToast.warning({
+                    title: 'Грешни данни',
+                    message: "Всички полета трябва да са попълнени",
+                    overlay: true,
+                    zindex: 999,
+                    position: 'center',
+                    timeout: 2000,
+                });
+
+            }
+        });
+    </script>
+
+{% endblock %}

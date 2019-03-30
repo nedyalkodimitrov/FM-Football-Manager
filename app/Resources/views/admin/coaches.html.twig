@@ -1,0 +1,79 @@
+{% extends 'admin/base.html.twig' %}
+ {% block nav %}
+     <a class="nav-item nav-link  ml-2" href="{{ path("adminHomeAction") }}">Начална страница </a>
+     <a class="nav-item nav-link ml-2 " href="{{ path("youthTeams") }}">Юнушестки отбори</a>
+
+ {% endblock  %}
+{%  block body %}
+    <div id="container ">
+        <div class="row mt-5  justify-content-center">
+            <div class="col-lg-11 col-md-7 col-sm-11 col-10 justify-content-between div-charts row pb-3">
+                <div class="col-12 text-center">
+                    <h2 >Основен Отбор</h2>
+                </div>
+                {% set foo = 1 %}
+                {% for coache in team.Coaches%}
+                    <div class="col-lg-3 col-sm-12 col-md-12 justify-content-center player_portfolio row ">
+                        <div class="col-12 player-container " id="player-{{  foo }} ">
+                            {% if coache.Image == null or coache.Image == ' ' %}
+                                <img src="{{asset('images/user1.png')}}" alt="" class="player_img">
+                            {% else %}
+                                <img src="{{asset('images/'~ coache.Image )}}" alt="" class="player_img">
+                            {% endif %}
+                            <p class="player_name">{{ coache.UserId.Name }} </p>
+{#                            <p class="">{{ coache.teamPosition.position }}</p>#}
+                        </div>
+                    </div>
+                    {% set foo = foo + 1 %}
+                {% endfor %}
+                <div class="col-lg-3 col-sm-12 col-md-12 justify-content-center player_portfolio row ">
+                    <div class="col-12 player-container add-player justify-content-center text-center" id="player-{{  foo }} ">
+
+                        <img src="{{ asset('images/plus .png') }}" alt="" class="add-player-img">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% for youthTeam in youthTeams %}
+        <div id="container ">
+            <div class="row mt-5  justify-content-center">
+                <div class="col-lg-11 col-md-7 col-sm-11 col-10 justify-content-between div-charts row pb-3">
+                    <div class="col-12 text-center">
+                        <h2 >{{ youthTeam.Name }}</h2>
+                    </div>
+                    {% set foo = 1 %}
+                    {% for coache in youthTeam.Coaches%}
+                        <div class="col-lg-3 col-sm-12 col-md-12 justify-content-center player_portfolio row  " id="{{ coache.Id }}">
+                            <div class="col-12 player-container " id="player-{{  foo }} ">
+                                <a href="{{ path('coacheAction',{id : coache.Id}) }}">{% if coache.Image == null or coache.Image == ' ' %}
+                                        <img src="{{asset('images/user1.png')}}" alt="" class="player_img">
+                                    {% else %}
+                                        <img src="{{asset('images/'~ coache.Image )}}" alt="" class="player_img">
+                                    {% endif %}
+                                    <p class="player_name">{{ coache.UserId.Name }} </p>
+                                    {#                            <p class="">{{ coache.teamPosition.position }}</p>#}</a>
+                            </div>
+                        </div>
+
+                        {% set foo = foo + 1 %}
+                    {% endfor %}
+
+
+                        <div class="col-lg-3 col-sm-12 col-md-12 justify-content-center player_portfolio-2 row ">
+                            <div class="col-12 player-container add-player justify-content-center text-center" id="player-{{  foo }} ">
+
+                                <img src="{{ asset('images/plus .png') }}" alt="" class="add-player-img">
+
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

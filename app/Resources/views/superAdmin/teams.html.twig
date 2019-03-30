@@ -1,0 +1,188 @@
+{% extends 'superAdmin/base.html.twig' %}
+{% block body %}
+    <div class="col-12 row justify-content-center mx-auto max-resolution">
+        <div class="col-lg-11 col-md-7 col-sm-11 col-10   row pb-3">
+            {% for team in teams%}
+                <div class="col-lg-4 col-sm-11 row m-0 ">
+                    <div class="col-lg-12  col-sm-9 col-md-6 country-container text-center mt-3 mx-auto">
+                        <a href="" class="m-0">
+                            {% if team.Image == null or team.Image == "" %}
+                                <img src="{{asset("images/football-logo.jpg" )}}" alt="" class="country-img m-0">
+                                {% else  %}
+                                    <img src="{{asset("images/" ~ team.Image)}}" alt="" class="country-img m-0">
+                            {% endif %}
+
+                            <h1 class="country-text mt-1 text-left mb-2">{{ team.Name }}</h1>
+                        </a>
+                        <span><i class="fas fa-times country-fa-times" id="{{ team.Id }}"></i></span>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="col-lg-4 col-sm-12 col-md-12 ml-lg-2  justify-content-center player_portfolio row ">
+                <div class="col-12 player-container add-player justify-content-center text-center " id="player- ">
+
+                    <img src="{{ asset('images/plus .png') }}" alt="" class="add-player-img ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="team-status-container row justify-content-center align-items-center">
+        <div class="col-9  team-status-div row align-items-center justify-content-center" id="add-player" >
+            <div class="col-8 row justify-content-center">
+                <h3 class="mb-3 col-12 text-center">Искате ли отборът да бъде изтрит:</h3>
+                <button class="btn bg-danger" id="no">Не</button>
+                <button class="btn btn-green" id="yes">Да</button>
+
+            </div>
+            <span><i class="fas fa-times-circle color-black "></i></span>
+        </div>
+    </div>
+    <div class="player-status-container row justify-content-center align-items-center">
+        <div class="col-9  player-status-div row align-items-center justify-content-center" id="add-player" >
+            <div class="col-8 row justify-content-center">
+                <h2 class="col-12 text-center mb-3">Добавяне на отбор</h2>
+                <div class="input-group mb-4 mt-2 col-lg-11 col-sm-12">
+                    <input class="effect-2 bg-gray name" id="name" inputmask type="text" data-trigger="hover" data-toggle="popover"  data-content=" " placeholder="Име на отбора..." id="email" aria-label="Email" >
+                    <span class="focus-border"></span>
+                </div>
+                <div class="input-group mb-4 mt-2 col-lg-11 col-sm-12">
+                    <input class="effect-2 bg-gray phone" inputmask type="text" data-trigger="hover" data-toggle="popover"  data-content="Телефонният номер трябва да е дълъг 10 цифри " placeholder="Телефон..." id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                    <span class="focus-border"></span>
+                </div>
+                <button class="btn bg-mycolor" id="send-info">Създаване на нов отбор</button>
+
+            </div>
+            <span><i class="fas fa-times-circle color-black "></i></span>
+        </div>
+    </div>
+    <script>
+
+
+
+        $('.add-player').on('click', function () {
+            var player = $(this).children().attr('id');
+            $('.player-status-container').css('visibility', 'visible');
+            $('.player-status-div').css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.player-status-container').css('visibility', 'hidden');
+                $('.player-status-div').css('visibility', 'hidden');
+            });
+        });
+
+        $('.country-fa-times').on('click', function () {
+            var team = $(this).attr('id');
+            $('.team-status-container').css('visibility', 'visible');
+            $('.team-status-div').css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.team-status-container').css('visibility', 'hidden');
+                $('.team-status-div').css('visibility', 'hidden');
+            });
+            $('#no').on('click', function () {
+                $('.team-status-container').css('visibility', 'hidden');
+                $('.team-status-div').css('visibility', 'hidden');
+            });
+            $('#yes').on('click', function () {
+                $.ajax({
+                    method: "POST",
+                    data: {"division" : {{ division.Id }} },
+                    url: " app.php/superAdmin/deleteTeam/" + team,
+                })
+                    .done(function( msg ) {
+                        window.location.href = "/superAdmin/teams/" + {{ division.Id }};
+
+                    });
+            });
+        });
+
+        $('.phone').inputmask('Regex', {
+            regex: "08([7-9])([0-9]{7})+",
+            alias: "string",
+            clearIncomplete: true
+        });
+
+        $('#name').inputmask("Regex", {
+            regex:"[A-Z][a-z 1-9]+" ,
+            alias: "string",
+            clearIncomplete: true
+        });
+
+
+        $('#send-info').on('click', function () {
+            var name = $('.name').val();
+            var phone = $('.phone').val();
+
+            var namesChecker = false;
+            var  phoneCheker = false;
+
+
+            if(name.length > 5  ){
+                namesChecker = true;
+            }else {
+                iziToast.warning({
+                    title: 'Грешни данни',
+                    message: "Името трябва да е по-дълgо от 5 символа",
+                    overlay: true,
+                    zindex: 999,
+                    position: 'center',
+                    timeout: 2000,
+                });
+
+            }
+
+
+            if (phone.length == 10){
+                phoneCheker = true;
+            }else {
+                console.log(phone);
+                iziToast.warning({
+                    title: 'Грешни данни',
+                    message: "Телефона трябва да е с дължина от 10 цифри",
+                    overlay: true,
+                    zindex: 999,
+                    position: 'center',
+                    timeout: 2000,
+                });
+
+            }
+            if (phoneCheker == true && namesChecker == true){
+                $.ajax({
+                    method: "POST",
+                    data: {"name": name, "phone": phone, "division" : {{ division.Id }} },
+                    url: "{{ path('superAdminCreateTeam') }}",
+                })
+                    .done(function( msg ) {
+                        if(msg == 2){
+                            window.location.href = "app.php/superAdmin/teams/" + {{ division.Id }};
+                        }else if (msg == 0){
+                            iziToast.warning({
+                                title: 'Грешни данни',
+                                message: "Вече има такъв телефон в базата данни",
+                                overlay: true,
+                                zindex: 999,
+                                position: 'center',
+                                timeout: 2000,
+                            });
+                        }
+                        console.log(msg);
+                    });
+            }else{
+                iziToast.warning({
+                    title: 'Грешни данни',
+                    message: "Всички полета трябва да са попълнени",
+                    overlay: true,
+                    zindex: 999,
+                    position: 'center',
+                    timeout: 2000,
+                });
+
+            }
+        });
+
+
+
+    </script>
+{% endblock %}

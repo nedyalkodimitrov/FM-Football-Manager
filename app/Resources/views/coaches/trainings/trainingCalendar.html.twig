@@ -1,0 +1,152 @@
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="  {{ asset("css/trainingTemplate.css") }}">
+    <meta charset="utf-8">
+    <title>FM-Football Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{ asset('css/navTemplate.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <link rel="stylesheet" href="{{ asset('css/calendar.css')}}">
+    <script type="text/javascript" src="{{  asset("mdb/js/jquery-3.3.1.min.js")}}"></script>
+    <script type="text/javascript" src="{{ asset("js/trainingCalendar.php") }}"></script>
+    <script type="text/javascript" src="{{ asset("mdb/js/mdb.min.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("mdb/js/bootstrap.min.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("js/settingsMenu.js") }}"></script>
+
+{% endblock %}
+{% block body %}
+
+
+    <div class="p-0 nav-constainer ">
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <a class="navbar-brand" href="#"><img src="{{ asset("images/fm.png") }}" alt="" class="logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+                <div class="navbar-nav mr-5">
+                    {% block nav %}
+                        <a class="nav-item nav-link  ml-2" href="{{ path('coacheViewAction') }}">Начална страница</a>
+                        <a class="nav-item nav-link current-item ml-2" href="{{ path("trainingView") }}">Тренировки</a>
+                    {% endblock %}
+                </div>
+                <div class=" ">
+                    <button><span class="mr-3"><i class="fas fa-user"></i></span></button>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <br><br>
+    <div class="container">
+        <div class="row">
+            <div class="calendar col-12">
+                <div>
+                    <div class="card-header bg-mycolor ">
+                        <ul>
+                            <li id="month" class="text-white text-uppercase text-center">
+                            </li>
+                            <li id="year" class="text-white text-uppercase text-center">
+                            </li>
+                        </ul>
+                    </div>
+                    <table class="table calendar table-bordered table-responsive-sm "  id="calendar">
+                        <thead>
+                        <tr class="weekdays bg-dark">
+                            <th scope="col" class="text-white text-center">Пон</th>
+                            <th scope="col" class="text-white text-center">Вто</th>
+                            <th scope="col" class="text-white text-center">Сря</th>
+                            <th scope="col" class="text-white text-center">Чет</th>
+                            <th scope="col" class="text-white text-center">Пет</th>
+                            <th scope="col" class="text-white text-center">Съб</th>
+                            <th scope="col" class="text-white text-center">Нед</th>
+                        </tr>
+                        </thead>
+                        <tbody class="days bg-light" id="days"></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <br><hr>
+        <div class="row">
+            <div class="col-md offset-md-1">
+                <form id="form_create_appointment">
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label class="required">Дата</label>
+                            <input class="form-control date-input" type="text" id="date" data-trigger="hover" data-toggle="popover" name="_date" title="Дата" data-content="Можете да изберете всяка дата от днес, като кликнете върху номера в календара" required>
+                        </div>
+                        <div class="col form-group">
+                            <label>Описание</label>
+                            <input class="form-control" type="text" id="description">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label class="required">Начален час</label>
+                            <input class="form-control time-input" type="text" id="start_time" required>
+                        </div>
+                        <div class="col form-group">
+                            <label class="required">Край на събитието</label>
+                            <input class="form-control time-input" type="text" id="end_time" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <button type="button" class="btn btn-danger btn-block" id="clear" onclick="clear_input()">Clear Form</button>
+                        </div>
+                        <div class="col form-group">
+                            <button type="button" class="btn btn-danger  btn-block" id="submit" onclick="make_appointment()" disabled="disabled">Make Appointment</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col offset-md-1">
+                <div class="row">
+                    <div class="col">
+                        <h3>Събития</h3>
+                    </div>
+
+                </div>
+                <table class="table table-bordered table-hover table-striped table-sm" id="delete-injured-table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="text-center align-middle">Дата</th>
+                        <th scope="col" class="text-center align-middle">Описание</th>
+                        <th scope="col" class="text-center align-middle">Начален час</th>
+                        <th scope="col" class="text-center align-middle">Край на събитето</th>
+                        <th scope="col" class="text-center align-middle">Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for schedule in schedules %}
+                        <tr>
+                            <th scope="col" class="text-center align-middle">{{ schedule.Date }}</th>
+                            <th scope="col" class="text-center align-middle">{{ schedule.Description }}</th>
+                            <th scope="col" class="text-center align-middle">{{ schedule.startTime}}</th>
+                            <th scope="col" class="text-center align-middle">{{ schedule.endTime }}</th>
+                            <th scope="col" class="text-center align-middle"><i class="fas fa-times"></i></th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+    <script src="{{ asset("js/calendar.js")}}"></script>
+{% endblock %}
+

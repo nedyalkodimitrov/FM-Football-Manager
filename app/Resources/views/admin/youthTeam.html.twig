@@ -1,0 +1,315 @@
+{% extends 'admin/base.html.twig' %}
+ {% block nav %}
+     <a class="nav-item nav-link   ml-2" href="{{ path("adminHomeAction") }}">Начална страница </a>
+     <a class="nav-item nav-link ml-2 current-item" href="{{ path("youthTeams") }}">Юнушестки отбори</a>
+ {% endblock  %}
+{%  block body %}
+    <div id="container ">
+        <div class="row mt-5  justify-content-center">
+            <div class="col-lg-11 col-md-7 col-sm-11 col-10 justify-content-center div-charts row pb-3">
+                <div class="col-12 text-center">
+                    <h2 >Играчи</h2>
+                </div>
+                {% set foo = 1 %}
+                {% for player in players %}
+                    <div class="col-lg-3 col-sm-12 col-md-12 justify-content-center player_portfolio row ">
+                        <div class="col-12 player-container " id="player-{{  foo }} ">
+                            {%   if  player.Status == 0 %}
+                                <div class="status-green"></div>
+                            {%  endif %}
+
+                            {% if player.Image == null or player.Image == ' ' %}
+                                <img src="{{asset('images/user1-white2.png')}}" alt="" class="player_img">
+                            {% else %}
+                                <img src="{{asset('images/'~ player.Image )}}" alt="" class="player_img">
+                            {% endif %}
+                            <p class="player_name">{{ player.UserId.Name }} </p>
+                            <p class="player-position">{{ player.position.positions }}</p>
+                            <span><i class="fas fa-times country-fa-times players" id="{{ player.Id }}"></i></span>
+                        </div>
+                    </div>
+                    {% set foo = foo + 1 %}
+                {% endfor %}
+                <div class="col-lg-3 col-sm-12 col-md-12 justify-content-center player_portfolio row mr-2">
+                    <div class="col-12 player-container add-player justify-content-center text-center" id="player-{{  foo }} ">
+
+                        <img src="{{ asset('images/plus .png') }}" alt="" class="add-player-img">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="container ">
+        <div class="row mt-5  justify-content-center">
+            <div class="col-lg-11 col-md-7 col-sm-11 col-10 justify-content-center div-charts row pb-3">
+                <div class="col-12 text-center">
+                    <h2 >Треньори</h2>
+                </div>
+                {% set foo = 1 %}
+                {% for coache in coaches%}
+                    <div class="col-lg-3 col-sm-12 col-md-12 justify-content-center player_portfolio row ">
+                        <div class="col-12 player-container " id="player-{{  foo }} ">
+                                 {% if coache.Image == null or coache.Image == ' ' %}
+                                    <img src="{{asset('images/user1-white2.png')}}" alt="" class="player_img">
+                                {% else %}
+                                    <img src="{{asset('images/'~ coache.Image )}}" alt="" class="player_img">
+                                {% endif %}
+                                <p class="player_name">{{ coache.UserId.Name }} </p>
+                            <span><i class="fas fa-times country-fa-times coaches" id="{{ coache.Id }}"></i></span>
+                        </div>
+                    </div>
+                    {% set foo = foo + 1 %}
+                {% endfor %}
+                <div class="col-lg-3 col-sm-12 col-md-12 justify-content-center player_portfolio row ">
+                    <div class="col-12 player-container add-coache justify-content-center text-center" id="player-{{  foo }} ">
+
+                        <img src="{{ asset('images/plus .png') }}" alt="" class="add-player-img">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="team-status-container row justify-content-center align-items-center">
+        <div class="col-9  team-status-div row align-items-center justify-content-center" id="add-player" >
+            <div class="col-8 row justify-content-center">
+                <h3 class="mb-3 col-12 text-center">Искате ли да изтриете записа:</h3>
+                <button class="btn bg-danger" id="no">Не</button>
+                <button class="btn btn-green" id="yes">Да</button>
+
+            </div>
+            <span><i class="fas fa-times-circle color-black "></i></span>
+        </div>
+    </div>
+    <div class="player-status-container row justify-content-center align-items-center">
+        <div class="col-lg-9 col-sm-10 player-status-div row align-items-center justify-content-center" id="add-player" >
+            <div class="col-lg-8 col-sm-11 row justify-content-center">
+                    <div class="input-group mb-3 col-lg-6 col-sm-12">
+                        <input class="effect-2 bg-gray name" type="text"  placeholder="Име..." id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                        <span class="focus-border"></span>
+                    </div>
+                    <div class="input-group mb-3 mt-2 col-lg-6 col-sm-12">
+                        <input class="effect-2  bg-gray fName" type="text" placeholder="Фамилия..." id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                        <span class="focus-border"></span>
+                    </div>
+                    <div class="input-group mb-3 col-lg-6 col-sm-12">
+                        <select class="form-control select bg-gray col-sm-12 " id="position" >
+                            <option value="0" selected="selected" disabled="disabled" class="bg-gray">Защо няма да може да доидете </option>
+                            <option value="1" class="bg-gray">Вратар(GK)</option>
+                            <option value="2" class="bg-gray">Нападател(ST)</option>
+                            <option value="3" class="bg-gray">Контузен</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-4 mt-2 col-lg-6 col-sm-12">
+                        <input class="effect-2 bg-gray phone" inputmask type="text" placeholder="Телефон..." id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                        <span class="focus-border"></span>
+                    </div>
+                    <button class="btn bg-mycolor" id="send-info">Потвърди</button>
+
+            </div>
+
+
+            <span><i class="fas fa-times-circle"></i></span>
+        </div>
+    </div>
+
+
+    <div class="coache-status-container row justify-content-center align-items-center">
+        <div class="col-lg-9 col-sm-10 coache-status-div row align-items-center justify-content-center" id="add-coache" >
+            <div class="col-lg-8 col-sm-11 row justify-content-center">
+                <div class="input-group mb-3 col-lg-6 col-sm-12">
+                    <input class="effect-2 bg-gray coacheName" type="text"  placeholder="Име..." id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                    <span class="focus-border"></span>
+                </div>
+                <div class="input-group mb-3 mt-2 col-lg-6 col-sm-12">
+                    <input class="effect-2  bg-gray coacheFName" type="text" placeholder="Фамилия..." id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                    <span class="focus-border"></span>
+                </div>
+                <div class="input-group mb-3 col-lg-6 col-sm-12">
+                    <select class="form-control select bg-gray col-sm-12 " id="coachePosition" >
+                        <option value="0" selected="selected" disabled="disabled" class="bg-gray">Защо няма да може да доидете </option>
+                        <option value="1" class="bg-gray">Главен(GK)</option>
+                        <option value="2" class="bg-gray">Помощник(ST)</option>
+                        <option value="3" class="bg-gray">Контузен</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4 mt-2 col-lg-6 col-sm-12">
+                    <input class="effect-2 bg-gray coachePhone" inputmask type="text" placeholder="Телефон..." id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">
+                    <span class="focus-border"></span>
+                </div>
+                <button class="btn bg-mycolor" id="send-info-coache">Потвърди</button>
+
+            </div>
+
+
+            <span><i class="fas fa-times-circle"></i></span>
+        </div>
+    </div>
+    <script>
+        $('.add-player').on('click', function () {
+            var player = $(this).children().attr('id');
+            $('.player-status-container').css('visibility', 'visible');
+            $('.player-status-div').css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.player-status-container').css('visibility', 'hidden');
+                $('.player-status-div').css('visibility', 'hidden');
+            });
+        });
+
+        $('.add-coache').on('click', function () {
+            var player = $(this).children().attr('id');
+            $('.coache-status-container').css('visibility', 'visible');
+            $('.coache-status-div').css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.coache-status-container').css('visibility', 'hidden');
+                $('.coache-status-div').css('visibility', 'hidden');
+            });
+        });
+
+
+        $('.players').on('click', function () {
+            var player = $(this).attr('id');
+            $('.team-status-container').css('visibility', 'visible');
+            $('.team-status-div').css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.team-status-container').css('visibility', 'hidden');
+                $('.team-status-div').css('visibility', 'hidden');
+            });
+            $('#no').on('click', function () {
+                $('.team-status-container').css('visibility', 'hidden');
+                $('.team-status-div').css('visibility', 'hidden');
+            });
+            $('#yes').on('click', function () {
+                $.ajax({
+                    method: "POST",
+
+                    url: " app.php/admin/deletePlayer/" + player,
+                })
+                    .done(function( msg ) {
+                        window.location.href = "app.php/admin/youthTeams";
+
+                    });
+            });
+        });
+
+        $('.coaches').on('click', function () {
+            var coache = $(this).attr('id');
+            $('.team-status-container').css('visibility', 'visible');
+            $('.team-status-div').css('visibility', 'visible');
+
+            $('.fa-times-circle').on('click', function () {
+                $('.team-status-container').css('visibility', 'hidden');
+                $('.team-status-div').css('visibility', 'hidden');
+            });
+            $('#no').on('click', function () {
+                $('.team-status-container').css('visibility', 'hidden');
+                $('.team-status-div').css('visibility', 'hidden');
+            });
+            $('#yes').on('click', function () {
+                $.ajax({
+                    method: "POST",
+
+                    url: " app.php/admin/deleteCoache/" + coache,
+                })
+                    .done(function( msg ) {
+                        window.location.href = "app.php/admin/youthTeams";
+
+                    });
+            });
+        });
+
+        $('.phone').inputmask('Regex', {
+            regex: "08([7-9])([0-9]{8})+",
+            alias: "string",
+            clearIncomplete: true
+        });
+        $(".name").inputmask("Regex", {
+            regex:'[А-Я][а-я]+' ,
+            alias: "datetime",
+            clearIncomplete: true
+        });
+        $(".fName").inputmask("Regex", {
+            regex:'[А-Я][а-я]+' ,
+            alias: "datetime",
+            clearIncomplete: true
+        });
+
+        $('.cochePhone').inputmask('Regex', {
+            regex: "08([7-9])([0-9]{8})+",
+            alias: "string",
+            clearIncomplete: true
+        });
+        $(".coacheName").inputmask("Regex", {
+            regex:'[А-Я][а-я]+' ,
+            alias: "datetime",
+            clearIncomplete: true
+        });
+        $(".coacheFName").inputmask("Regex", {
+            regex:'[А-Я][а-я]+' ,
+            alias: "datetime",
+            clearIncomplete: true
+        });
+
+        $('#send-info').on('click', function () {
+            var name = $('.name').val();
+            var fName = $('.fName').val();
+            var position = $('#position').val();
+            var phone = $('.phone').val();
+
+            $('#position').val(0);
+            $('.name').val('');
+            $('.fName').val('');
+            $('.phone').val('');
+
+            $.ajax({
+                method: "POST",
+                data: {"appbundle_users[name]": name, "appbundle_users[fName]": fName, "position": position, "appbundle_players[phone]": phone},
+                url: "{{ path('youthTeam',{id : teamId}) }}",
+            })
+                .done(function( msg ) {
+                    console.log(msg);
+                    console.log(name);console.log(fName);console.log(position);console.log(phone);
+
+                });
+        });
+
+        $('#send-info-coache').on('click', function () {
+            var name = $('.coacheName').val();
+            var fName = $('.coacheFName').val();
+            var coachePosition = $('#coachePosition').val();
+            var phone = $('.coachePhone').val();
+            console.log(name);console.log(fName);console.log(coachePosition);console.log(phone);
+
+            $.ajax({
+                method: "POST",
+                data: {"appbundle_users[name]": name, "appbundle_users[fName]": fName, "position": coachePosition, "appbundle_coaches[phone]": phone},
+                url: "{{ path('youthTeam',{id : teamId}) }}",
+            })
+                .done(function( msg ) {
+
+
+                    if (msg = 2) {
+                        $('#coachePosition').val(0);
+                        $('.name').val('');
+                        $('.fName').val('');
+                        $('.phone').val('');
+                    }else if (msg = 1){
+                        $('.phone').val('');
+                    }else if(msg = 0){
+                        $('#position').val(0);
+                    }else{
+
+                    }
+
+                });
+        });
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends 'player/base.html.twig' %}
+{% block body %}
+        <div id="container ">
+    <div class="row mt-5  justify-content-center">
+        <div class="col-lg-11 col-md-7 col-sm-11 col-10  div-charts row pb-3">
+            <div class="col-12 text-center">
+                <h2 >Основни характеристики</h2>
+            </div>
+
+            <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
+                <p > {{ playerFat }}<i class="fa fa-percent" aria-hidden="true"></i></p>
+                <div class="fat-percent-div">
+                    <h3>
+                        <span class="label green badge fat-percent-badge">Подкожни мазнини</span>
+                    </h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12 col-md-12 mt-2 text-center">
+                <span class="min-chart" id="chart-sales" data-percent="56"><span class="percent"></span></span>
+                <h3>
+                    <span class="label green badge ">Обща оценка</span>
+                </h3>
+            </div>
+            <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
+                <p> {{ pace }} km/h </p>
+                <div class="fat-percent-div">
+                    <h3>
+                        <span class="label green badge fat-percent-badge">Скорост</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        <div id="container" class="mv-5 ">
+            <div class="row mt-5 justify-content-center ">
+                <div class="col-lg-11 col-md-7 col-sm-11 col-10 p-0 m-0 row justify-content-between ">
+                    <div class="col-lg-3 col-12 d-lg-inline-block d-md-noned- d-sm-none water-container p-4  text-center justify-content-center " >
+                        <h2 > Дневен прием на вода</h2>
+                        <img src="{{ asset("images/glass-of-water.png") }}" alt="" class="water-glass mt-5 col-12">
+                        <div class="col-12 row p-3 pb-lg-2 pb-md-2 pb-sm-2 pb-2 m-auto align-items-center">
+                            <button class="water-button  water-button-minus col-4 pr-1 text-right"><i class="fa fa-minus"> </i></button>
+                            <h3 class="col-4 justify-content-center numOfWaterGlasses">{{ waterGlasses }}</h3>
+                            <button class="water-button water-button-plus col-4 pl-1 text-left"> <i class="fa fa-plus"></i></button>
+                        </div>
+                        <h4 class="mb-3">1  <i class="fa fa-glasses"></i>- 250ml вода</h4>
+                    </div>
+
+                    <div class="col-lg-8 col-md-12 col-sm-12 col-12 ml-md-1 ml-sm-1  mx-0 p-0 mt-lg-0 mt-md-0 mt-sm-5 mt-5 row ">
+                        <div class="table col-12  mh-25" id="teamLeadership-container ">
+                            <table class="table  table-bordered col-12 "  style="margin-bottom: 0; padding:0">
+                                <tr class="row col-12 p-0 m-0 bg-success">
+                                    <th class="col-1"></th>
+                                    <th class="col-4">Име</th>
+                                    <th class="col-1">ИМ</th>
+                                    <th class="col-1">П</th>
+                                    <th class="col-1">Р</th>
+                                    <th class="col-1">З</th>
+                                    <th class="col-1">ВГ</th>
+                                    <th class="col-1">ДГ</th>
+                                    <th class="col-1">Т</th>
+                                </tr>
+                                {% set rowNum = 1 %}
+                                {% for team in teams %}
+                                    {% if myTeam.Id == team.Id %}
+                                        <tr class="teamTable row col-12 p-0 m-0 bg-gray">
+                                            <th  class="col-1 justify-content-end"> {{ rowNum }}</th>
+                                            <th class="col-4"> {{ team.name }}</th>
+                                            <th class="col-1"> {{ team.playedGames }}</th>
+                                            <th class="col-1"> {{ team.wins }}</th>
+                                            <th class="col-1"> {{ team.drawsGames}}</th>
+                                            <th class="col-1"> {{ team.lostGames}}</th>
+                                            <th class="col-1"> {{ team.Goals}}</th>
+                                            <th class="col-1"> {{ team.GoalsInTheTeamDoor}}</th>
+                                            <th class="col-1">{{ team.points }}</th>
+                                        </tr>
+                                    {% else %}
+                                        <tr class="teamTable row col-12 p-0 m-0">
+                                            <th  class="col-1 justify-content-end"> {{ rowNum }}</th>
+                                            <th class="col-4"> {{ team.name }}</th>
+                                            <th class="col-1"> {{ team.playedGames }}</th>
+                                            <th class="col-1"> {{ team.wins }}</th>
+                                            <th class="col-1"> {{ team.drawsGames}}</th>
+                                            <th class="col-1"> {{ team.lostGames}}</th>
+                                            <th class="col-1"> {{ team.Goals}}</th>
+                                            <th class="col-1"> {{ team.GoalsInTheTeamDoor}}</th>
+                                            <th class="col-1">{{ team.points }}</th>
+                                        </tr>
+                                    {% endif %}
+
+                                    {% set rowNum = rowNum + 1 %}
+                                 {% else %}
+                                     <li><em>Вие нямате отбор</em></li>
+                                 {%  endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div id="container ">
+    <div class="row mt-5  justify-content-center">
+        <div class="col-lg-11 col-md-7 col-sm-11 col-10  div-charts row pb-3">
+            <canvas id="lineChart"></canvas>
+        </div>
+    </div>
+</div>
+        <script type="text/javascript" src="{{  asset("mdb/js/jquery-3.3.1.min.js")}}"></script>
+        <script type="text/javascript" src="{{  asset("easy-pie-chart-master/dist/jquery.easypiechart.js")}}"></script>
+        <script type="text/javascript" src="{{ asset("js/playerScore.js") }}"></script>
+        <script type="text/javascript" src="{{ asset("js/waterGlassesActions.js") }}"></script>
+        <script type="text/javascript" src="{{ asset("mdb/js/mdb.min.js") }}"></script>
+        <script type="text/javascript" src="{{ asset("mdb/js/bootstrap.min.js") }}"></script>
+    <script>
+
+        var ctxL = document.getElementById("lineChart").getContext('2d');
+        var myLineChart = new Chart(ctxL, {
+            type: 'line',
+            data: {
+                labels: [ {% for water in allWatersGlasese%}
+                    "{{ water.date  }}",
+                    {% endfor %}],
+                datasets: [{
+                    label: "Дневен прием на вода",
+                    data: [ {% for water in allWatersGlasese%}
+                        {{ water.WaterGlasses }},
+                        {% endfor %}],
+                    backgroundColor: [
+                        'rgba(105, 0, 132, .2)',
+                    ],
+                    borderColor: [
+                        'rgba(200, 99, 132, .7)',
+                    ],
+                    borderWidth: 2
+                }
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+    </script>
+{% endblock %}
