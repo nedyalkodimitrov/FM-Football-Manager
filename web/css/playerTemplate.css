@@ -519,3 +519,40 @@ body {
 .team-status {
 
 }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.user_name{
+    visibility: visible;
+    float: left;
+    font-size: 22px;
+    padding: 0px;
+    margin: 0px;
+    margin: auto;
+
+    color: #383839;
+
+}
+.user_name2{
+    visibility: hidden;
+    float: left;
+    font-size: 22px;
+    padding: 0px;
+    margin: 0px;
+    margin: auto;
+
+    color: #383839;
+
+}
+
+@media only screen and (max-width: 990px) {
+    .user_name{
+        visibility: hidden;
+    }
+    .user_name2{
+        visibility: visible;
+    }
+}

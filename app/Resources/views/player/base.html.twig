@@ -38,12 +38,17 @@
 
                     {% endblock %}
                 </div>
-                <div class=" ">
-                    {% if profile_img == ''  or profile_img == null %}
-                        <a href=" {{ path("player_settings") }}" class="profile_pic_a "><img src="{{asset("images/user1.png")}}" alt="" class="user_profile_img"></a>
-                    {% else %}
-                        <a href=" {{ path("player_settings") }}" class="profile_pic_a "><img src="{{asset("images/" ~ profile_img)}}" alt="" class="user_profile_img"></a>
-                    {% endif %}
+                <div class=" mt-md-2 mt-sm-2 row text-sm-left text-md-left col-sm-6 col-md-6 justify-content-sm-left justify-content-md-left">
+                    <p class="user_name pr-lg-2 pl-sm-2 ">Zlati Petkov Zlati </p>
+                    <div class="">
+
+                        {% if profile_img == ''  or profile_img == null %}
+                            <a href=" {{ path("player_settings") }}" class="profile_pic_a "><img src="{{asset("images/user1.png")}}" alt="" class="user_profile_img"></a>
+                        {% else %}
+                            <a href=" {{ path("player_settings") }}" class="profile_pic_a "><img src="{{asset("images/" ~ profile_img)}}" alt="" class="user_profile_img"></a>
+                        {% endif %}
+                    </div>
+                    <p class="user_name2 ">Zlati Petkov Zlati </p>
                 </div>
             </div>
         </nav>
