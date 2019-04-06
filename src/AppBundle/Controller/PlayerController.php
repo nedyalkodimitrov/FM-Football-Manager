@@ -2,84 +2,47 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Coaches;
 use AppBundle\Entity\PlayerProperties\Positions;
 use AppBundle\Entity\PlayerProperties\WaterGlasses;
 use AppBundle\Entity\Players;
 use AppBundle\Entity\PlayersInjured;
-use AppBundle\Entity\Teams;
-use AppBundle\Entity\YouthTeams;
 use AppBundle\Form\PlayersInjuredType;
+use AppBundle\Repository\PlayerProperties\WaterGlassesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use AppBundle\Service;
 
 class PlayerController extends Controller
 {
+    private $playerPropService;
+    private $waterGlassRepo;
+
+    public function __construct(Service\PlayerProperties $playerProperties, WaterGlassesRepository $waterGlassesRepository)
+    {
+        $this->playerPropService = $playerProperties;
+        $this->waterGlassRepo = $waterGlassesRepository;
+    }
+
     /**
      * @Route("/player", name ="playerView")
      */
-    public function IndexView()
+    public function IndexView(WaterGlassesRepository $waterGlasses)
     {
+        $player =  $this->getUser()->getPlayer();
 
-        $userId = $this->getUser()->getId();
-
-        $player = $this->getDoctrine()
-            ->getRepository(Players::class)
-            ->findOneBy(['userId' => $userId]);
-
-        $water_glasses = $this->getDoctrine()
-            ->getRepository(WaterGlasses::class)
-            ->findBy(['playerId' => $userId], [ 'id' => 'DESC']);
-
-        $currentDate = Date('Y-m-d');
-
-        $time = strtotime($currentDate);
-        $today= date('Y-m-d',$time);
-
-        if ($water_glasses == null) {
-            $waterTime = 0;
-        }else{
-            $waterTime = strtotime($water_glasses[0]->getDate());
-        }
-        $waterDay= date('Y-m-d',$waterTime);
-
-        if ($water_glasses == null || $waterDay < $today ){
-            $water = new WaterGlasses();
-            $em = $this->getDoctrine()->getManager();
-            $water->setPlayerId($this->getUser());
-            $water->setDate($currentDate);
-            $water->setWaterGlasses(0);
-            $em->persist($water);
-            $em->flush();
-        }
-        $water_glasses = $this->getDoctrine()
-            ->getRepository(WaterGlasses::class)
-            ->findBy(['playerId' => $userId], [ 'id' => 'DESC']);
-
-        $allWater_glasses = $this->getDoctrine()
-            ->getRepository(WaterGlasses::class)
-            ->findBy(['playerId' => $userId], [ 'id' => 'ASC']);
-
-        if($player->getTeam() != null){
-            $team = $player->getTeam();
-            $devision = $team->getDevision();
-            $teams = $this->getDoctrine()->getRepository(Teams::class)->findBy(['division' => $devision->getId()], ['points' => 'DESC']);
-        }else {
-            $team = $player->getYouthTeams();
-            $devision = $team->getDivision();
-            $teams = $this->getDoctrine()->getRepository(YouthTeams::class)->findBy(['division' => $devision->getId()], ['points' => 'DESC']);
-
-        }
+        $lastWaterRecord = $this->playerPropService->LastWaterRecord($this->getUser(), $this->getUser()->getId());
+        $allWaterRecords = $waterGlasses->getWaterGlassesByUserASC( $this->getUser()->getId());
+        $playerProp = $this->playerPropService->PlayerTeam($player);
 
         return $this->render('player/index.html.twig', array('coachStatus' => $player->getStatusFromCoaches(),
             'playerFat' => $player->getFat(),
             'pace' => $player->getPace(),
-            'waterGlasses' =>  $water_glasses[0]->getWaterGlasses(),
-            'allWatersGlasese' => $allWater_glasses,
-            'teams' => $teams,
-            'myTeam' => $team,
+            'teams' => $playerProp[1],
+            'myTeam' => $playerProp[2],
+            'waterGlasses' =>  $lastWaterRecord->getWaterGlasses(),
+            'allWatersGlasese' => $allWaterRecords,
             'profile_img' => $player->getImage()
 
         ));
@@ -91,18 +54,11 @@ class PlayerController extends Controller
     public function RemoveWaterGlassesAction()
     {
         $userId = $this->getUser()->getId();
-
-        $water_glasses = $this->getDoctrine()
-            ->getRepository(WaterGlasses::class)
-            ->findBy(['playerId' => $userId], [ 'id' => 'DESC']);
+        $water_glasses = $this->waterGlassRepo->getWaterGlassesByUserDESC($userId);
 
         if ($water_glasses[0]->getWaterGlasses() > 0){
-
-            $water_glasses[0]->setWaterGlasses($water_glasses->getWaterGlasses() - 1);
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($water_glasses[0]);
-            $entityManager->flush();
+            $water_glasses[0]->setWaterGlasses($water_glasses[0]->getWaterGlasses() - 1);
+            $this->waterGlassRepo->save($water_glasses[0]);
 
         }
         echo 'success';
@@ -115,19 +71,11 @@ class PlayerController extends Controller
     public function AddWaterGlassesAction()
     {
         $userId = $this->getUser()->getId();
-
-        $water_glasses = $this->getDoctrine()
-            ->getRepository(WaterGlasses::class)
-            ->findBy(['playerId' => $userId], [ 'id' => 'DESC']);
+        $water_glasses = $this->waterGlassRepo->getWaterGlassesByUserDESC($userId);
 
         if ($water_glasses[0]->getWaterGlasses() < 21) {
-
             $water_glasses[0]->setWaterGlasses($water_glasses[0]->getWaterGlasses() + 1);
-
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $entityManager->persist($water_glasses[0]);
-            $entityManager->flush();
+            $this->waterGlassRepo->save($water_glasses[0]);
 
             echo 'success';
             exit;
@@ -153,9 +101,7 @@ class PlayerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $players->getImage();
-
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
-
             try {
                 $file->move(
                     $this->getParameter('images_directory'),
@@ -195,6 +141,12 @@ class PlayerController extends Controller
      */
     public function TrainingView(\Symfony\Component\HttpFoundation\Request $request)
     {
+        $Current = Date('N');
+        $DaysToSunday = 7 - $Current;
+        $DaysFromMonday = $Current - 1;
+        $Sunday = Date('d-m-Y', StrToTime("+ {$DaysToSunday} Days"));
+        $Monday = Date('d-m-Y', StrToTime("- {$DaysFromMonday} Days"));
+
         $player = $this->getUser()->getPlayer();
         $status = new PlayersInjured();
         $form = $this->createForm(PlayersInjuredType::class, $status);
@@ -226,11 +178,6 @@ class PlayerController extends Controller
             }
         }
 
-        $Current = Date('N');
-        $DaysToSunday = 7 - $Current;
-        $DaysFromMonday = $Current - 1;
-        $Sunday = Date('d-m-Y', StrToTime("+ {$DaysToSunday} Days"));
-        $Monday = Date('d-m-Y', StrToTime("- {$DaysFromMonday} Days"));
 
         if ($player->getYouthTeams() != null){
             $team = $player->getYouthTeams();
@@ -252,8 +199,6 @@ class PlayerController extends Controller
 
         $bigCoache = null;
 
-
-
         return $this->render('player/training.html.twig' , array('schedule' => $schedule,
             'monday' => strval($Monday),
             'sunday' => strval($Sunday),
@@ -272,10 +217,8 @@ class PlayerController extends Controller
         $player= $this->getUser()->getPlayer()->getId();
 
         $stat = $this->getDoctrine()->getRepository(PlayersInjured::class)->find($id);
-        if ($stat->getUsers()->getId() != $player){
+        if ($stat->getUsers()->getId() != $player)
             return $this->redirectToRoute(playerTraining);
-
-        }
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($stat);
@@ -283,6 +226,10 @@ class PlayerController extends Controller
         echo 1;
         exit;
     }
+
+
+
+
 
 
 

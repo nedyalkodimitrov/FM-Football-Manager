@@ -2,6 +2,11 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Players;
+use AppBundle\Entity\Teams;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
+
 /**
  * PlayersRepository
  *
@@ -10,4 +15,16 @@ namespace AppBundle\Repository;
  */
 class PlayersRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, new Mapping\ClassMetadata(Players::class));
+    }
+
+
+    public function getPlayerTeam(Players $players){
+        return $players->getTeam();
+    }
+
+
+
 }

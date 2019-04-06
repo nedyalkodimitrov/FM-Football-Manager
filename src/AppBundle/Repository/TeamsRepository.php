@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Teams;
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * TeamsRepository
  *
@@ -10,4 +13,14 @@ namespace AppBundle\Repository;
  */
 class TeamsRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, new \Doctrine\ORM\Mapping\ClassMetadata(Teams::class));
+    }
+
+    public function getTeamByDivisionDesc($devisionId){
+        return $this->_em->getRepository(Teams::class)->findBy(['devision' => $devisionId], ['points' => 'DESC']);
+    }
+
 }
