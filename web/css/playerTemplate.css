@@ -244,6 +244,12 @@ thead, tbody tr {
 
 }
 
+
+
+.user_profile_img:hover{
+    box-shadow: 0px 5px 15px gray;
+}
+
 .coache_image {
     width: 50%;
     border-radius: 100px;
@@ -526,33 +532,44 @@ body {
     float: none;
 }
 .user_name{
-    visibility: visible;
+    display: flex;
     float: left;
     font-size: 22px;
     padding: 0px;
-    margin: 0px;
     margin: auto;
-
+    margin-right: 2%;
     color: #383839;
 
 }
 .user_name2{
-    visibility: hidden;
+    display: none;
     float: left;
     font-size: 22px;
     padding: 0px;
     margin: 0px;
     margin: auto;
-
+    margin-left: 2%;
     color: #383839;
 
 }
 
 @media only screen and (max-width: 990px) {
     .user_name{
-        visibility: hidden;
+        display: none;
     }
     .user_name2{
-        visibility: visible;
+        display: flex;
     }
+}
+
+table {
+    height: auto;
+}
+
+tbody>tr{
+    border: 2px solid whitesmoke;
+}
+tr {
+    width: 100%;
+    overflow-wrap: break-word;
 }

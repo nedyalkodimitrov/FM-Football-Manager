@@ -22,8 +22,6 @@
                         <label for="form_image" class="">   <img src="{{asset("images/" ~ image)}}" alt="" class="profile_pic"></label>
                     {% endif %}
 
-
-
                     {{ form_widget(form.image, {'attr' : {'class' : 'inputfile', 'id' : 'uploadImage'}})  }}
                     {{ form_row(form.save, {'attr' : {'class':'btn'}} ) }}
 

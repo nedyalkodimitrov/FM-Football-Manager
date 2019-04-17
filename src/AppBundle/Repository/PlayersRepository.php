@@ -17,12 +17,17 @@ class PlayersRepository extends \Doctrine\ORM\EntityRepository
 {
     public function __construct(EntityManagerInterface $em)
     {
-        parent::__construct($em, new Mapping\ClassMetadata(Players::class));
+        parent::__construct($em,new \Doctrine\ORM\Mapping\ClassMetadata(Players::class));
     }
 
 
-    public function getPlayerTeam(Players $players){
-        return $players->getTeam();
+    public function getPlayerTeam(Players $player){
+        if ($player->getYouthTeams() != null){
+            $team = $player->getYouthTeams();
+        }else{
+            $team = $player->getTeam();
+        }
+        return $team;
     }
 
 

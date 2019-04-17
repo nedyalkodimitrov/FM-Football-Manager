@@ -9,7 +9,10 @@
         <link rel="stylesheet" href="  {{ asset("css/playerTemplate.css") }}    ">
         <link rel="stylesheet" href="  {{ asset("css/coacheIndex.css") }}    ">
         <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
         {% block style %}{% endblock %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
         <script type="text/javascript" src="{{  asset("mdb/js/jquery-3.3.1.min.js")}}"></script>
         <script type="text/javascript" src="{{  asset("easy-pie-chart-master/dist/jquery.easypiechart.js")}}"></script>
         <script type="text/javascript" src="{{ asset("js/playerScore.js") }}"></script>
@@ -17,19 +20,13 @@
         <script type="text/javascript" src="{{ asset("mdb/js/mdb.min.js") }}"></script>
         <script type="text/javascript" src="{{ asset("mdb/js/bootstrap.min.js") }}"></script>
         <script type="text/javascript" src="{{ asset("js/settingsMenu.js") }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
-
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light nav-container ">
             <a class="navbar-brand" href="#"><img src="{{ asset("images/fm.png") }}" alt="" class="logo"></a>
-
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
                 <div class="navbar-nav mr-5">
                     {% block nav %}
@@ -39,16 +36,15 @@
                     {% endblock %}
                 </div>
                 <div class=" mt-md-2 mt-sm-2 row text-sm-left text-md-left col-sm-6 col-md-6 justify-content-sm-left justify-content-md-left">
-                    <p class="user_name pr-lg-2 pl-sm-2 ">Zlati Petkov Zlati </p>
+                    <p class="user_name ">Здравейте, гн. {{ playerName }} </p>
                     <div class="">
-
                         {% if profile_img == ''  or profile_img == null %}
                             <a href=" {{ path("player_settings") }}" class="profile_pic_a "><img src="{{asset("images/user1.png")}}" alt="" class="user_profile_img"></a>
                         {% else %}
                             <a href=" {{ path("player_settings") }}" class="profile_pic_a "><img src="{{asset("images/" ~ profile_img)}}" alt="" class="user_profile_img"></a>
                         {% endif %}
                     </div>
-                    <p class="user_name2 ">Zlati Petkov Zlati </p>
+                    <p class="user_name2 pl-lg-2 pl-sm-2 ">Здравейте, гн. {{ playerName }} </p>
                 </div>
             </div>
         </nav>

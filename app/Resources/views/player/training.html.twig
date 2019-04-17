@@ -2,21 +2,20 @@
  {% block nav %}
      <a class="nav-item nav-link   ml-2" href="#">Начална страница </a>
      <a class="nav-item nav-link current-item ml-2" href="{{ path("playerTraining") }}">Тренировки</a>
-
  {% endblock %}
 {% block body%}
     <div class="container row mt-3 col-12 justify-content-between max-resolution mb-5">
-        <table class="table col-lg-8 table-bordered col-sm-12 ">
-            <thead class="bg-dark">
-            <tr class=" color-white">
-                <th scope="col ml-1 ml-sm-5">Пон</th>
-                <th scope="col ml-1 ml-sm-5">Втор</th>
-                <th scope="col ml-1 ml-sm-5">Сря</th>
-                <th scope="col ml-1 ml-sm-5">Чет</th>
-                <th scope="col ml-1 ml-sm-5">Пет</th>
-                <th scope="col ml-1 ml-sm-5">Съб</th>
-                <th scope="col ml-1 ml-sm-5">Нед</th>
-            </tr>
+        <table class="table col-lg-8  col-sm-12 ">
+            <thead class="bg-mycolor">
+                <tr class=" color-white">
+                    <th scope="col ml-1 ml-sm-5" class="col-sm-12 text-center">Пон</th>
+                    <th scope="col ml-1 ml-sm-5" class="col-sm-12 text-center">Втор</th>
+                    <th scope="col ml-1 ml-sm-5" class="col-sm-12 text-center">Сря</th>
+                    <th scope="col ml-1 ml-sm-5" class="col-sm-12 text-center">Чет</th>
+                    <th scope="col ml-1 ml-sm-5" class="col-sm-12 text-center">Пет</th>
+                    <th scope="col ml-1 ml-sm-5" class="col-sm-12 text-center">Съб</th>
+                    <th scope="col ml-1 ml-sm-5" class="col-sm-12 text-center">Нед</th>
+                </tr>
             </thead>
             <tbody>
                 <tr class="">
@@ -30,17 +29,15 @@
                                 </td>
                                 {% set j = j + 1 %}
                             {% else %}
-                                    <td class="ml-1 mr-sm-5 col-1">{{ schedule[j].Description }} <br>{{ schedule[j].StartTime }}</td>
+                                    <td class="ml-1 mr-sm-5 col-1 text-center">{{ schedule[j].Description }} <br>{{ schedule[j].StartTime }}</td>
                             {% endif %}
 
                             {% set j = j + 1 %}
                         {% else %}
-                            <td class=" col-1 "><h6>Почивка</h6></td>
-
+                            <td class="ml-1 mr-sm-5 col-1 text-center "><h6>Почивка</h6></td>
                             {% set j = j + 1 %}
                         {% endif %}
                     {% endfor %}
-
                 </tr>
             </tbody>
         </table>
@@ -58,10 +55,7 @@
                 {% else %}
                     <h2>Нямате главен треньор и съобщението може да не бъде видяно</h2>
                         <button class="btn bg-mycolor treatment">Пропускане на тренировка </button>
-
-
                 {% endif %}
-
             </div>
         </div>
     </div>
@@ -70,7 +64,6 @@
         <div class="col-9 col-sm-10 player-status-div row align-items-center justify-content-center" id="treatment_info" >
             <h1 class="text-center">Пропускане на тренировка </h1>
             <div class="col-lg-8 col-sm-11  row justify-content-center">
-
                 <div class="input-group mb-3 col-lg-6 col-sm-12">
                     <select class="form-control select bg-gray col-sm-12 " id="status" >
                         <option value="" selected="selected" disabled="disabled" class="bg-gray">Защо няма да може да доидете </option>
@@ -92,191 +85,33 @@
                     <span class="focus-border"></span>
                 </div>
                 <button class="btn bg-mycolor" id="send-info">Потвърди</button>
-
             </div>
             <span><i class="fas fa-times-circle" ></i></span>
         </div>
     </div>
-
-    <div class="container row col-12 justify-content-between max-resolution">
-        <table class="table table-bordered table-hover table-striped table-sm" id="appointment_list">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col" class="text-center align-middle">Причина</th>
-                <th scope="col" class="text-center align-middle">Медикаменти</th>
-                <th scope="col" class="text-center align-middle">От</th>
-                <th scope="col" class="text-center align-middle">До</th>
-                <th scope="col" class="text-center align-middle">Action</th>
-            </tr>
-            </thead>
-
-            {% for stat in status %}
-                <tr class="{{ stat.Id }}">
-                    <td scope="col" class="text-center align-middle">{{ stat.Status }}</td>
-                    <td scope="col" class="text-center align-middle">{{ stat.Medicaments }}</td>
-                    <td scope="col" class="text-center align-middle">{{ stat.startTreatment }}</td>
-                    <td scope="col" class="text-center align-middle">{{ stat.endTreatment }}</td>
-                    <td scope="col" class="text-center align-middle"><span id=""><i class="fa fa-times delete-injured" id="{{ stat.Id }}"  aria-hidden="true"></i></span></td>
-
-                </tr>
-            {% endfor %}
-            <tbody>
-            </tbody>
-        </table>
+    <div class="col-12 justify-content-center row">
+       <table class="table col-11  ">
+           <thead class="bg-mycolor">
+           <tr class="color-white">
+               <th scope="col" class="text-center align-middle">Причина</th>
+               <th scope="col"  class="text-center align-middle">Медикаменти</th>
+               <th scope="col"  class="text-center align-middle">Период</th>
+               <th scope="col"  class="text-center align-middle">Деиствия</th>
+           </tr>
+           </thead>
+           <tbody>
+           {% for stat in status %}
+               <tr class="{{ stat.Id }}">
+                   <td scope="col" class="text-center align-middle">{{ stat.Status }}</td>
+                   <td scope="col" class="text-center align-middle">{{  stat.Medicaments}}</td>
+                   <td scope="col" class="text-center align-middle">{{ stat.startTreatment }} ~ {{ stat.endTreatment }} </td>
+                   <td scope="col" class="text-center align-middle"><span id=""><i class="fa fa-times delete-injured" id="{{ stat.Id }}"  aria-hidden="true"></i></span></td>
+               </tr>
+           {% endfor %}
+           </tbody>
+       </table>
     </div>
-
-
-
-
-
-    <script>
-        $('.treatment').on('click', function () {
-            $('.player-status-container').css('visibility', 'visible');
-            $('#treatment_info').css('visibility', 'visible');
-
-            $('.fa-times-circle').on('click', function () {
-                $('.player-status-container').css('visibility', 'hidden');
-                $('#treatment_info').css('visibility', 'hidden');
-            });
-
-
-        });
-
-        $('.delete-injured').on('click', function () {
-            var statId =  $(this).attr('id');
-            console.log(statId);
-            $.ajax({
-                method: "POST",
-                url: "/player/deleteStat/"+statId,
-            })
-                .done(function( msg ) {
-                    if (msg == 1){
-                        iziToast.success({
-                            title: '',
-                            message: 'Вие успешно уведомихте треньора, че няма да ходите на тренировка',
-                            position: 'topRight',
-                        });
-                        $('.' + statId).remove();
-                    }
-
-
-                });
-        });
-
-
-        $(".startDate-input").inputmask("dd/mm/yyyy", {
-            placeholder: "dd/mm/YYYY",
-            alias: "date",
-            clearIncomplete: true
-        });
-        $(".endDate-input").inputmask("dd/mm/yyyy", {
-            placeholder: "dd/mm/YYYY",
-            alias: "date",
-            clearIncomplete: true
-        });
-
-
-        $('.select').on('change', function () {
-            if ($('.select').val == 'family'){
-                console.log('1');
-
-            }
-        });
-
-        $('#send-info').on('click', function () {
-            var status = $('#status').val();
-            var medicaments = $('.medicaments').val();
-            var startTreatment = $('.startDate-input').val();
-            var endTreatment = $('.endDate-input').val();
-
-
-
-            var timeCheck = false;
-            var statusCheck = false;
-            var day = new Date();
-            var dd = day.getDate();
-            var mm = day.getMonth() + 1; //January is 0!
-            var secondmm = day.getMonth() + 2;
-            var yyyy = day.getFullYear();
-
-            if (dd < 10) {
-                dd = '0' + dd;
-            }
-
-            if (mm < 10) {
-                mm = '0' + mm;
-            }
-
-
-            var start = startTreatment.split('/');
-            var end = endTreatment.split('/');
-
-            if(dd <= start[0] && mm<=start[1] && yyyy == start[2] && secondmm > start[1]  && start[0] <= end[0] && start[1] <= end[1] && end[1] <= secondmm && end[2]==yyyy){
-                var timeCheck = true;
-            }else {
-                iziToast.warning({
-                    title: 'Грешни данни',
-                    message: "Неможе началната дата да е по-голяма от крайната",
-                    overlay: true,
-                    zindex: 999,
-                    position: 'center',
-                    timeout: 2000,
-                });
-            }
-            if(status != 0){
-                statusCheck = true;
-            }else {
-                iziToast.warning({
-                    title: 'Грешни данни',
-                    message: "Моля изберете причината, поради която ще отсъствате",
-                    overlay: true,
-                    zindex: 999,
-                    position: 'center',
-                    timeout: 2000,
-                });
-            }
-
-            if (statusCheck == true && timeCheck == true){
-                $.ajax({
-                    method: "POST",
-                    data: {"appbundle_playersinjured[status]": status, "appbundle_playersinjured[medicaments]": medicaments, "appbundle_playersinjured[startTreatment]": startTreatment, "appbundle_playersinjured[endTreatment]": endTreatment},
-                    url: "{{ path('playerTraining') }}",
-                })
-                    .done(function( msg ) {
-                        console.log(msg);
-                        if(msg == 1){
-                            iziToast.success({
-                                title: '',
-                                message: 'Вие успешно уведомихте треньора, че няма да ходите на тренировка',
-                                position: 'topRight',
-                            });
-                        }else if(msg == 2){
-                            iziToast.warning({
-                                title: 'Грешка',
-                                message: "Имате съвпадение в датите",
-                                overlay: true,
-                                zindex: 999,
-                                position: 'center',
-                                timeout: 20000,
-                            });
-                        }else{
-                            iziToast.warning({
-                                title: 'Грешка',
-                                message: "Грешла при записването на данни",
-                                overlay: true,
-                                zindex: 999,
-                                position: 'center',
-                                timeout: 20000,
-                            });
-                        }
-                        $('#status').val('');
-                        $('.medicaments').val('');
-                        $('.startDate-input').val('');
-                        $('.endDate-input').val('');
-                    });
-            }
-        });
-
-
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+    <script src="{{ asset('js/playerTraining.js') }}"></script>
 {% endblock %}
