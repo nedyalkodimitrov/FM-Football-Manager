@@ -38,7 +38,7 @@ class PlayerController extends Controller
         $lastWaterRecord = $this->playerPropService->LastWaterRecord($this->getUser(), $this->getUser()->getId());
         $allWaterRecords = $waterGlasses->getWaterGlassesByUserASC( $this->getUser()->getId());
         $playerProp = $this->playerPropService->PlayerTeam($player);
-
+        $playerNames = $this->playerName($player->getUserId()->getFName());
         return $this->render('player/index.html.twig', array('coachStatus' => $player->getStatusFromCoaches(),
             'playerFat' => $player->getFat(),
             'pace' => $player->getPace(),
@@ -47,7 +47,7 @@ class PlayerController extends Controller
             'waterGlasses' =>  $lastWaterRecord->getWaterGlasses(),
             'allWatersGlasese' => $allWaterRecords,
             'profile_img' => $player->getImage(),
-            'playerName' => $player->getUserId()->getFName(),
+            'playerName' => $playerNames,
 
         ));
     }
@@ -115,17 +115,21 @@ class PlayerController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->render('player/settings/settings.html.twig',
+            return $this->render('player/settings/newSettingPage.html.twig',
                 array("image" => $user->getImage(),
                     'form' => $form->createView(),
-                    'player' => $user));
+                    'player' => $user,
+                    'playerName' => $user->getUserId()->getName(). ' '.$user->getUserId()->getFName()
+                ));
         }
 
-        return $this->render('player/settings/settings.html.twig',
+        return $this->render('player/settings/newSettingPage.html.twig',
             array('form' => $form->createView(),
                 "image" => $this->getUser()->getPlayer()->getImage(),
                 'profile_img' =>$this->getUser()->getPlayer()->getImage(),
-                'player' => $user));
+                'player' => $user,
+                'playerName' => $user->getUserId()->getName(). ' '.$user->getUserId()->getFName()
+                ));
     }
 
     private function generateUniqueFileName()
@@ -230,5 +234,16 @@ class PlayerController extends Controller
     }
 
 
+    private function playerName($name){
+        $time = date('h');
+
+        if ($time >7 && $time < 11){
+            return "Добро утро, господин ".$name;
+        }else if($time >= 11 && $time< 17){
+            return "Добър ден, господин ".$name;
+        }
+
+        return "Добър вечер, господин ".$name;
+    }
 
 }

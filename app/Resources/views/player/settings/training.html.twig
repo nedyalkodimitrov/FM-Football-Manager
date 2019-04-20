@@ -1,8 +1,4 @@
 {% extends 'coaches/base.html.twig' %}
-
-{% block style %}
-
-{% endblock %}
 {% block body%}
    <div class="container row mt-3 col-12 justify-content-between max-resolution">
        <table class="table col-8 trainig-program-list">
@@ -18,18 +14,17 @@
            </tr>
            </thead>
            <tbody>
-
-           <tr class="taining-program-tr">
-               {% set j = 0 %}
-               {% for x in range(monday|date('U'), sunday|date('U'), 86400 ) %}
-                   {% if  j < schedule|length and schedule[j].date ==  x|date('d/m/Y')|trans   %}
-                       <td>{{ schedule[j].Description }} </br> {{ schedule[j].startTime }}  </td>
-                       {% set j = j + 1 %}
-                   {% else %}
-                       <td>Почивка</td>
-                   {% endif %}
-               {% endfor %}
-           </tr>
+               <tr class="taining-program-tr">
+                   {% set j = 0 %}
+                   {% for x in range(monday|date('U'), sunday|date('U'), 86400 ) %}
+                       {% if  j < schedule|length and schedule[j].date ==  x|date('d/m/Y')|trans   %}
+                           <td>{{ schedule[j].Description }} </br> {{ schedule[j].startTime }}  </td>
+                           {% set j = j + 1 %}
+                       {% else %}
+                           <td>Почивка</td>
+                       {% endif %}
+                   {% endfor %}
+               </tr>
            </tbody>
        </table>
        <div class="container row col-4 trainig-program  ">
@@ -44,8 +39,7 @@
                <button class="btn bg-mycolor treatment">Пропускане на тренировка </button>
            </div>
        </div>
-   </div>
-
+    </div>
     <div class="player-status-container row justify-content-center align-items-center">
         <div class="col-9 col-sm-10 player-status-div row align-items-center justify-content-center" id="treatment_info" >
             <div class="col-8 row justify-content-center">
@@ -70,14 +64,11 @@
                     <span class="focus-border"></span>
                 </div>
                 <button class="btn bg-mycolor" id="send-info">Потвърди</button>
-
             </div>
             <span><i class="fas fa-times-circle"></i></span>
         </div>
     </div>
-<p> блалбалбал</p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
-
     <script>
         $('.treatment').on('click', function () {
             $('.player-status-container').css('visibility', 'visible');
@@ -87,8 +78,6 @@
                 $('.player-status-container').css('visibility', 'hidden');
                 $('#treatment_info').css('visibility', 'hidden');
             });
-
-
         });
 
 
@@ -102,10 +91,6 @@
             alias: "datetime",
             clearIncomplete: true
         });
-
-
-
-
 
         $('.select').on('change', function () {
             if ($('.select').val == 'family'){
@@ -132,10 +117,7 @@
                 .done(function( msg ) {
                     console.log(msg);
                     console.log(status);
-
                 });
-
-
         });
 
     </script>

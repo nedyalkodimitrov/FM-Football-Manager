@@ -5,6 +5,10 @@
 body {
     margin:0px;
     font-family: "Times New Roman"  ;
+    background-color: whitesmoke;
+}
+nav {
+    background-color: white;
 }
 
 
@@ -79,3 +83,11 @@ body {
     background-color: #f94019;
 }
 
+.player-visit-container {
+    margin: 0;
+    padding: 2%;
+    width: 80%;
+    background-color: white;
+    border: 2px solid #a4a4a4;
+    border-radius: 2px;
+}
