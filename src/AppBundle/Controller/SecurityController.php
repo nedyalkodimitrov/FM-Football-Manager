@@ -111,11 +111,8 @@ class SecurityController extends Controller
         $email = $this->getDoctrine()->getRepository(Players::class)->findBy(["email" => $request->get("email")]);
 
         if(count($email) > 0){
-            echo 3;
-            exit;
+            return 3;
         }
-
-
 
         if(count($player) !=0 ){
             $user = $player[0]->getUserId();

@@ -26,135 +26,135 @@
                            <h2 class=" justify-content-center text-center">Статистика </h2>
                            <div class="col-12 justify-content-center text-center row mt-5">
                                <div class="col-lg-3 col-sm-4 col-md-3 mr-lg-4 mr-md-4 mr-sm-0 mt-4   myBorderPlayerStat-left  text-center">
-                                   {% if player.Weight == null%}
+                                   {% if playerStats.Weight == null%}
                                        <h4>Килограми: 0кг</h4>
                                    {% else %}
-                                       <h4>Килограми: {{ player.Weight }}кг</h4>
+                                       <h4>Килограми: {{ playerStats.Weight }}кг</h4>
                                    {% endif %}
                                </div>
                                <div class="col-lg-3 col-sm-4 col-md-3  ml-lg-4 ml-md-4 ml-sm-0 mt-4   myBorderPlayerStat-left  text-center">
-                                   {% if player.Height == null%}
+                                   {% if playerStats.Height == null%}
                                        <h4>Височина: 0см</h4>
                                    {% else %}
-                                       <h4>Височина: {{ player.Height }}см</h4>
+                                       <h4>Височина: {{ playerStats.Height }}см</h4>
                                    {% endif %}
                                </div>
                            </div>
                        </div>
                     </div>
-                    {{ form_widget(form.image, {'attr' : {'class' : 'inputfile', 'id' : 'uploadImage'}})  }}
-                    {{ form_row(form.save, {'attr' : {'class':'btn'}} ) }}
+                    {{ form_widget(formPlayer.image, {'attr' : {'class' : 'inputfile', 'id' : 'uploadImage'}})  }}
+                    {{ form_row(formPlayer.save, {'attr' : {'class':'btn'}} ) }}
                     <div class="col-12 justify-content-center text-center row mt-5">
                         <h1 class="col-12 text-center">Статистика </h1>
                         <div class="col-lg-3 col-sm-4 col-md-3 mr-lg-4 mr-md-4 mr-sm-0 mt-4   myBorderPlayerStat-left  text-center">
-                            {% if player.Weight == null%}
+                            {% if playerStats.Weight == null%}
                                 <h2>Килограми: 0кг</h2>
                             {% else %}
-                                <h2>Килограми: {{ player.Weight }}кг</h2>
+                                <h2>Килограми: {{ playerStats.Weight }}кг</h2>
                             {% endif %}
                         </div>
                         <div class="col-lg-3 col-sm-4 col-md-3  ml-lg-4 ml-md-4 ml-sm-0 mt-4   myBorderPlayerStat-left  text-center">
-                            {% if player.Height == null%}
+                            {% if playerStats.Height == null%}
                                 <h2>Височина: 0см</h2>
                             {% else %}
-                                <h2>Височина: {{ player.Height }}см</h2>
+                                <h2>Височина: {{ playerStats.Height }}см</h2>
                             {% endif %}
                         </div>
                     </div>
                     <div class="col-12 justify-content-center text-center row">
                         <div class="col-lg-3 col-sm-4 col-md-3 mr-lg-4 mr-md-4 mr-sm-0  mt-4  myBorderPlayerStat-left text-center">
-                            {% if player.Pace == null%}
+                            {% if playerStats.Pace == null%}
                                 <h2>Скорост: 0 km/h</h2>
                             {% else %}
-                                <h2>Скорост: {{ player.Pace }} km/h</h2>
+                                <h2>Скорост: {{ playerStats.Pace }} km/h</h2>
                             {% endif %}
                         </div>
                         <div class="col-lg-3 col-sm-4 col-md-3 ml-lg-4 ml-md-4 ml-sm-0 mt-4  myBorderPlayerStat-left  text-center">
-                            {% if player.LongPass == null%}
+                            {% if playerStats.LongPass == null%}
                                 <h2>Дълъг пас: 0</h2>
                             {% else %}
-                                <h2>Дълъг пас: {{ player.LongPass}}</h2>
+                                <h2>Дълъг пас: {{ playerStats.LongPass}}</h2>
                             {% endif %}
                         </div>
                     </div>
                     <div class="col-12 justify-content-center text-center row">
                         <div class="col-lg-3 col-sm-4 col-md-3 mr-lg-4 mr-md-4 mr-sm-0 mt-4  myBorderPlayerStat-left  text-center">
-                            {% if player.Relax == null%}
+                            {% if playerStats.Relax == null%}
                                 <h2>Спокойствие на терена: 0</h2>
                             {% else %}
-                                <h2>Спокойствие на терена: {{ player.Relax}}</h2>
+                                <h2>Спокойствие на терена: {{ playerStats.Relax}}</h2>
                             {% endif %}
                         </div>
                         <div class="col-lg-3 col-sm-4 col-md-3 ml-lg-4 ml-md-4 ml-sm-0 mt-4    myBorderPlayerStat-left text-center">
-                            {% if player.Fat == null%}
+                            {% if playerStats.Fat == null%}
                                 <h2>Подкожни мазнини: 0%</h2>
                             {% else %}
-                                <h2>Подкожни мазнини: {{ player.Fat }}%</h2>
+                                <h2>Подкожни мазнини: {{ playerStats.Fat }}%</h2>
                             {% endif %}
                         </div>
                     </div>
                     <div class="col-12 justify-content-center text-center row">
                         <div class="col-lg-3 col-sm-4 col-md-4 mr-lg-4 mr-md-4 mr-sm-0 mt-4 myBorderPlayerStat-left  text-center">
-                            {% if player.Work == null%}
+                            {% if playerStats.Work == null%}
                                 <h2>Усърдна работа: 0</h2>
                             {% else %}
-                                <h2>Усърдна работа: {{ player.Work}}</h2>
+                                <h2>Усърдна работа: {{ playerStats.Work}}</h2>
 
                             {% endif %}
                         </div>
                         <div class="col-lg-3 col-sm-4 col-md-4 ml-lg-4 ml-md-4 ml-sm-0 mt-4 myBorderPlayerStat-left  text-center">
-                            {% if player.Tacticks == null%}
+                            {% if playerStats.Tacticks == null%}
                                 <h2>Тактика: 0</h2>
                             {% else %}
-                                <h2>Тактика: {{ player.Tacticks }}</h2>
+                                <h2>Тактика: {{ playerStats.Tacticks }}</h2>
                             {% endif %}
                         </div>
                     </div>
                     <div class="col-12 justify-content-center text-center row">
                         <div class="col-lg-3 col-sm-4 col-md-4 mr-lg-4 mr-md-4 mr-sm-0 mt-4 myBorderPlayerStat-left  text-center">
-                            {% if player.WillPower == null%}
+                            {% if playerStats.WillPower == null%}
                                 <h2>Воля: 0</h2>
                             {% else %}
-                                <h2>Воля:{{ player.WillPower}}</h2>
+                                <h2>Воля:{{ playerStats.WillPower}}</h2>
                             {% endif %}
                         </div>
                         <div class="col-lg-3 col-sm-4 col-md-4 ml-lg-4 ml-md-4 ml-sm-0 mt-4 myBorderPlayerStat-left  text-center">
-                            {% if player.Dribble == null%}
+                            {% if playerStats.Dribble == null%}
                                 <h2>Дрибъл: 0</h2>
                             {% else %}
-                                <h2>Дрибъл:{{ player.Dribble }}</h2>
+                                <h2>Дрибъл:{{ playerStats.Dribble }}</h2>
                             {% endif %}
                         </div>
                     </div>
                     <div class="col-12 justify-content-center text-center row">
                         <div class="col-lg-3 col-sm-4 col-md-4 mr-lg-4 mr-md-4 mr-sm-0 mt-4 myBorderPlayerStat-left  text-center">
-                            {% if player.Shot == null%}
+                            {% if playerStats.Shot == null%}
                                 <h2>Удар: 0</h2>
                             {% else %}
-                                <h2>Удар:{{ player.Shot }}</h2>
+                                <h2>Удар:{{ playerStats.Shot }}</h2>
                             {% endif %}
                         </div>
                         <div class="col-lg-3 col-sm-4 col-md-4 ml-lg-4 ml-md-4 ml-sm-0 mt-4 myBorderPlayerStat-left  text-center">
-                            {% if player.Technique == null%}
+                            {% if playerStats.Technique == null%}
                                 <h2>Техника: 0</h2>
                             {% else %}
-                                <h2>Техника:{{ player.Technique }}</h2>
+                                <h2>Техника:{{ playerStats.Technique }}</h2>
                             {% endif %}
                         </div>
                     </div>
                     <div class="col-12 justify-content-center text-center row">
                         <div class="col-lg-3 col-sm-4 col-md-4 mr-lg-4 mr-md-4 mr-sm-0 mt-4 myBorderPlayerStat-left  text-center">
-                            {% if player.Pass == null%}
+                            {% if playerStats.Pass == null%}
                                 <h2>Пас: 0</h2>
                             {% else %}
-                                <h2>Пас: {{ player.Pass }}</h2>
+                                <h2>Пас: {{ playerStats.Pass }}</h2>
                             {% endif %}
                         </div>
                         <div class="col-lg-3 col-sm-4 col-md-4 ml-lg-4 ml-md-4 ml-sm-0 mt-4 myBorderPlayerStat-left  text-center">
-                            {% if player.Perspective == null%}
+                            {% if playerStats.Perspective == null%}
                                 <h2>Перспектива: 0</h2>
                             {% else %}
-                                <h2>Перспектива:{{ player.Perspective}}</h2>
+                                <h2>Перспектива:{{ playerStats.Perspective}}</h2>
                             {% endif %}
                         </div>
                     </div>

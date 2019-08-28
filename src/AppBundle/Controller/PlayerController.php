@@ -2,9 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\PlayerProperties\PlayerStats;
 use AppBundle\Entity\PlayerProperties\Positions;
 use AppBundle\Entity\PlayerProperties\WaterGlasses;
 use AppBundle\Entity\Players;
+use AppBundle\Entity\Users;
+use AppBundle\Form\PlayerProperties\PlayerStatsType;
+use AppBundle\Form\PlayersType;
+use AppBundle\Repository\UsersRepository;
+use http\Client\Curl\User;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\PlayersInjured;
 use AppBundle\Form\PlayersInjuredType;
@@ -26,29 +33,40 @@ class PlayerController extends Controller
     {
         $this->playerPropService = $playerProperties;
         $this->waterGlassRepo = $waterGlassesRepository;
+
     }
 
     /**
      * @Route("/player", name ="playerView")
      */
-    public function IndexView(WaterGlassesRepository $waterGlasses)
+    public function IndexView()
     {
-        $player =  $this->getUser()->getPlayer();
+        $user = $this->getUser();
+        $player =  $user->getPlayer();
+        $playerStats = $player->getStats();
+        $lastWaterRecord = $this->playerPropService->LastWaterRecord($user, $user->getId());
+        $allWaterRecords = $this->waterGlassRepo->getWaterGlassesByUserASC($user->getId());
+        $playerTeam = $this->playerPropService->getTeam($player);
+        if ($playerTeam != null) {
+            $teams = $this->playerPropService->getTeams($playerTeam->getDivision());
+            $hasTeam = treu;
+        }else {
+            $teams = null;
+            $hasTeam = false;
+        }
 
-        $lastWaterRecord = $this->playerPropService->LastWaterRecord($this->getUser(), $this->getUser()->getId());
-        $allWaterRecords = $waterGlasses->getWaterGlassesByUserASC( $this->getUser()->getId());
-        $playerProp = $this->playerPropService->PlayerTeam($player);
-        $playerNames = $this->playerName($player->getUserId()->getFName());
-        return $this->render('player/index.html.twig', array('coachStatus' => $player->getStatusFromCoaches(),
-            'playerFat' => $player->getFat(),
-            'pace' => $player->getPace(),
-            'teams' => $playerProp[1],
-            'myTeam' => $playerProp[2],
+        $playerNames = $this->playerPropService->generateName($player->getUserId()->getFName());
+
+        return $this->render('player/index.html.twig', array('coachStatus' => $playerStats->getStatusFromCoaches(),
+            'playerFat' => $playerStats->getFat(),
+            'pace' => $playerStats->getPace(),
+            'teams' => $teams,
+            'hasTeam' => $hasTeam,
+            'myTeam' => $playerTeam,
             'waterGlasses' =>  $lastWaterRecord->getWaterGlasses(),
             'allWatersGlasese' => $allWaterRecords,
             'profile_img' => $player->getImage(),
             'playerName' => $playerNames,
-
         ));
     }
 
@@ -58,10 +76,12 @@ class PlayerController extends Controller
     public function RemoveWaterGlassesAction()
     {
         $userId = $this->getUser()->getId();
+
         $water_glasses = $this->waterGlassRepo->getWaterGlassesByUserDESC($userId);
-        if ($water_glasses[0]->getWaterGlasses() > 0){
-            $water_glasses[0]->setWaterGlasses($water_glasses[0]->getWaterGlasses() - 1);
-            $this->waterGlassRepo->save($water_glasses[0]);
+
+        if ($water_glasses->getWaterGlasses() > 0){
+            $water_glasses->setWaterGlasses($water_glasses->getWaterGlasses() - 1);
+            $this->waterGlassRepo->save($water_glasses);
 
         }
         return 'success';
@@ -72,11 +92,13 @@ class PlayerController extends Controller
      */
     public function AddWaterGlassesAction()
     {
-        $userId = $this->getUser()->getId();
+        $user = $this->getUser();
+        $userId = $user->getId();
         $water_glasses = $this->waterGlassRepo->getWaterGlassesByUserDESC($userId);
-        if ($water_glasses[0]->getWaterGlasses() < 21) {
-            $water_glasses[0]->setWaterGlasses($water_glasses[0]->getWaterGlasses() + 1);
-            $this->waterGlassRepo->save($water_glasses[0]);
+
+        if ($water_glasses->getWaterGlasses() < 21) {
+            $water_glasses->setWaterGlasses($water_glasses->getWaterGlasses() + 1);
+            $this->waterGlassRepo->save($water_glasses);
         }
         return 'success';
     }
@@ -86,20 +108,21 @@ class PlayerController extends Controller
      *
      */
     public function SettingsView(\Symfony\Component\HttpFoundation\Request $request){
-        $user = $this->getUser()->getPlayer();
-        $players = new Players();
-        $positions = $this->getDoctrine()->getRepository(Positions::class)->findAll();
-        $form = $this->createFormBuilder($players)
-            ->add('image', FileType::class, array('data_class' => null, ))
-            ->add('height')
-            ->add('weight')
-            ->add('save', SubmitType::class, ['label' => 'Запаметяване '])
-            ->getForm();
-        $form->handleRequest($request);
+        $currentPlayer = $this->getUser()->getPlayer();
+        $newPlayer = new Players();
+        $newPlayerStats = new PlayerStats();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $playerStats = $currentPlayer->getStats();
+
+        $positions = $this->getDoctrine()->getRepository(Positions::class)->findAll();
+        $formStats = $this->createForm(PlayerStatsType::class, $newPlayerStats);
+        $formPlayer = $this->createForm(PlayersType::class, $newPlayer);
+        $formStats->handleRequest($request);
+        $formPlayer->handleRequest($request);
+
+        if ($formPlayer->isSubmitted() && $formPlayer->isValid()) {
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-            $file = $players->getImage();
+            $file = $newPlayer->getImage();
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             try {
                 $file->move(
@@ -111,25 +134,30 @@ class PlayerController extends Controller
             }
 
             $em = $this->getDoctrine()->getManager();
-            $user->setImage($fileName);
-            $em->persist($user);
+            $currentPlayer->setImage($fileName);
+            $em->persist($currentPlayer);
             $em->flush();
 
             return $this->render('player/settings/newSettingPage.html.twig',
-                array("image" => $user->getImage(),
-                    'form' => $form->createView(),
-                    'player' => $user,
-                    'playerName' => $user->getUserId()->getName(). ' '.$user->getUserId()->getFName()
+                array("image" => $currentPlayer->getImage(),
+                    'formPlayer' => $formPlayer->createView(),
+                    'formStats' => $formStats->createView(),
+                    'player' => $currentPlayer,
+                    'playerStats' => $playerStats,
+                    'playerName' => $currentPlayer->getUserId()->getName(). ' '.$currentPlayer->getUserId()->getFName()
                 ));
         }
 
         return $this->render('player/settings/newSettingPage.html.twig',
-            array('form' => $form->createView(),
-                "image" => $this->getUser()->getPlayer()->getImage(),
-                'profile_img' =>$this->getUser()->getPlayer()->getImage(),
-                'player' => $user,
-                'playerName' => $user->getUserId()->getName(). ' '.$user->getUserId()->getFName()
-                ));
+            array(
+                'formPlayer' => $formPlayer->createView(),
+                'formStats' => $formStats->createView(),
+                "image" => $currentPlayer->getImage(),
+                'profile_img' =>$currentPlayer->getImage(),
+                'player' => $currentPlayer,
+                'playerStats' => $playerStats,
+                'playerName' => $currentPlayer->getUserId()->getName(). ' '.$currentPlayer->getUserId()->getFName()
+            ));
     }
 
     private function generateUniqueFileName()
@@ -142,12 +170,6 @@ class PlayerController extends Controller
      */
     public function TrainingView(\Symfony\Component\HttpFoundation\Request $request, PlayersInjuredRepository $playersInjuredRepo, PlayersRepository $playersRepository)
     {
-        $Current = Date('N');
-        $DaysToSunday = 7 - $Current;
-        $DaysFromMonday = $Current - 1;
-        $Monday = Date('d-m-Y', StrToTime("- {$DaysFromMonday} Days"));
-        $Sunday = Date('d-m-Y', StrToTime("+ {$DaysToSunday} Days"));
-
         $player = $this->getUser()->getPlayer();
         $status = new PlayersInjured();
         $form = $this->createForm(PlayersInjuredType::class, $status);
@@ -155,23 +177,28 @@ class PlayerController extends Controller
         $statuses = $this->getDoctrine()->getRepository(PlayersInjured::class)
             ->findBy(['users' =>$player->getId()], ['id' => 'DESC']);
 
+        $Current = Date('N');
+        $DaysToSunday = 7 - $Current;
+        $DaysFromMonday = $Current - 1;
+        $Monday = Date('d-m-Y', StrToTime("- {$DaysFromMonday} Days"));
+        $Sunday = Date('d-m-Y', StrToTime("+ {$DaysToSunday} Days"));
+
         if ($form->isSubmitted()) {
-            $querySuccseesd = $this->setPlayerInjured($player, $statuses, $status, $playersInjuredRepo);;
-           return new Response($querySuccseesd);
+            $querySuccseesd = $this->playerPropService->setInjured($player, $statuses, $status, $playersInjuredRepo);
+            return new Response($querySuccseesd);
         }
 
         $team = $playersRepository->getPlayerTeam($player);
         $coaches = $team->getCoaches();
-        $param = $this->getSchedule($coaches);
-        $bigCoache = $param[1];
-        $schedule = $param[0];
+        $schedule = $this->playerPropService->getSchedule($coaches);
+        $headCoache = $this->playerPropService->getHeadCoache($coaches);
 
         return $this->render('player/training.html.twig' , array('schedule' => $schedule,
             'monday' => strval($Monday),
             'sunday' => strval($Sunday),
             'profile_img' => $player->getImage(),
             'coaches' => $coaches,
-            'bigCoache' =>$bigCoache,
+            'bigCoache' =>$headCoache,
             'status' => $statuses,
             'playerName' => $player->getUserId()->getFName(),
         ));
@@ -193,57 +220,23 @@ class PlayerController extends Controller
         return 1;
     }
 
+    /**
+     * @Route("/player/getOutOfTeam", name="getOutOfteam")
+     */
+    public function getOutOfTeam(Request $request){
+        $player = $this->getUser()->getPlayer();
+        $em = $this->getDoctrine()->getManager();
 
-
-    private function setPlayerInjured($player, $statuses, $status, PlayersInjuredRepository $playersInjuredRepo){
-        $checker1 = true;
-        $checker2 = true;
-
-        foreach ($statuses as $stat){
-            if ($stat->getStartTreatment() >= $status->getStartTreatment()&& $status->getStartTreatment() <= $stat->getEndTreatment()){
-                $checker1 = false;
-            }
-            if ($stat->getEndTreatment() >= $status->getEndTreatment()&& $status->getEndTreatment() <= $stat->getEndTreatment()){
-                $checker2 = false;
-            }
+        if ($player->getTeam() != null ){
+            $player->setTeam(null);
+        }else {
+            $player->setYouthTeam(null);
         }
-        if ($checker1 == true && $checker2 == true) {
-            $status->setUsers($player);
-            $playersInjuredRepo->save($status);
-            return 1;
-        }else{
-            return 2;
-        }
-
-
+        $em->persist($player);
+        $em->flush();
+        return $this->redirectToRoute('playerView');
     }
 
 
-    private function getSchedule($coaches){
-        $schedule = [];
-        foreach ($coaches as $coache){
-            if($coache->getTeamPosition()->getId() == 1){
-                $bigCoache = $coache;
-                $schedule = $bigCoache->getSchedule();
-            }else{
-                $bigCoache = null;
-            }
-        }
-        $param =[$schedule, $bigCoache,];
-        return $param;
-    }
-
-
-    private function playerName($name){
-        $time = date('h');
-
-        if ($time >7 && $time < 11){
-            return "Добро утро, господин ".$name;
-        }else if($time >= 11 && $time< 17){
-            return "Добър ден, господин ".$name;
-        }
-
-        return "Добър вечер, господин ".$name;
-    }
 
 }

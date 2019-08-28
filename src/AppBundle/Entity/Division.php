@@ -39,7 +39,7 @@ class Division
 
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Teams", mappedBy="devision")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Teams", mappedBy="division")
      */
     private $teams;
 

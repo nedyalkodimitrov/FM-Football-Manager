@@ -19,8 +19,8 @@ class TeamsRepository extends \Doctrine\ORM\EntityRepository
         parent::__construct($em, new \Doctrine\ORM\Mapping\ClassMetadata(Teams::class));
     }
 
-    public function getTeamByDivisionDesc($devisionId){
-        return $this->_em->getRepository(Teams::class)->findBy(['devision' => $devisionId], ['points' => 'DESC']);
+    public function getTeamByDivisionDesc($divisionId){
+        return $this->_em->getRepository(Teams::class)->findBy(['division' => $divisionId], ['points' => 'DESC']);
     }
 
 }

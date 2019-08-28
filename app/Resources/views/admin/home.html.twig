@@ -293,48 +293,51 @@
             var fName = $('.fName').val();
             var position = $('#position').val();
             var phone = $('.phone').val();
-
-            var namesChecker = false;
-            var positionCheker = false;
-            var  phoneCheker = false
-            if(name >= 3 && fName >= 3){
-                namesChecker = true;
-            }else {
-                iziToast.warning({
-                    title: 'Грешни данни',
-                    message: "Неможе името и фамилията да съдържат по малко от 3 символа",
-                    overlay: true,
-                    zindex: 999,
-                    position: 'center',
-                    timeout: 2000,
-                });
-            }
-            if(position != 0){
-                positionCheker = true;
-            }else{
-                iziToast.warning({
-                    title: 'Грешни данни',
-                    message: "Моля изберете позиция, на която играча ще играе",
-                    overlay: true,
-                    zindex: 999,
-                    position: 'center',
-                    timeout: 2000,
-                });
-            }
-
-            if (phone == 10 ){
-                phoneCheker = true;
-            }else{
-                iziToast.warning({
-                    title: 'Грешни данни',
-                    message: "Телефона трябва да съдържа 10 цифри ",
-                    overlay: true,
-                    zindex: 999,
-                    position: 'center',
-                    timeout: 2000,
-                });
-            }
-
+            console.log(name);
+            console.log(fName);
+            console.log(position);
+            console.log(phone);
+            var namesChecker = true;
+            var positionCheker = true;
+            var  phoneCheker = true;
+            // if(name >= 3 && fName >= 3){
+            //     namesChecker = true;
+            // }else {
+            //     iziToast.warning({
+            //         title: 'Грешни данни',
+            //         message: "Не може името и фамилията да съдържат по малко от 3 символа",
+            //         overlay: true,
+            //         zindex: 999,
+            //         position: 'center',
+            //         timeout: 2000,
+            //     });
+            // }
+            // if(position != 0){
+            //     positionCheker = true;
+            // }else{
+            //     iziToast.warning({
+            //         title: 'Грешни данни',
+            //         message: "Моля изберете позиция, на която играча ще играе",
+            //         overlay: true,
+            //         zindex: 999,
+            //         position: 'center',
+            //         timeout: 2000,
+            //     });
+            // }
+            //
+            // if (phone == 10 ){
+            //     phoneCheker = true;
+            // }else{
+            //     iziToast.warning({
+            //         title: 'Грешни данни',
+            //         message: "Телефона трябва да съдържа 10 цифри ",
+            //         overlay: true,
+            //         zindex: 999,
+            //         position: 'center',
+            //         timeout: 2000,
+            //     });
+            // }
+            //
 
             if(namesChecker == true && positionCheker == true && phoneCheker == true) {
                 $.ajax({

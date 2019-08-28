@@ -74,7 +74,6 @@ class CoachesController extends Controller
     public function TrainingView(Request $request)
     {
 
-
         $user = $this->getUser();
         $userId = $user->getId();
         $coache = $user->getCoaches();
@@ -279,9 +278,6 @@ class CoachesController extends Controller
      */
     public function PlayerStats($id, \Symfony\Component\HttpFoundation\Request $request)
     {
-
-
-
         $player = $this->getDoctrine()->getRepository(Players::class)->find(intval($id));
         $player->setDribble(intval($request->get("dribble")));
         $player->setLongPass(intval($request->get("longPass")));
@@ -299,12 +295,11 @@ class CoachesController extends Controller
         $player->setWeight(intval($request->get("weight")));
         $player->setFat(intval($request->get("fat")));
 
-       $em = $this->getDoctrine()->getManager();
-       $em->persist($player);
-       $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($player);
+        $em->flush();
 
-       echo 1;
-       exit;
+       return 1;
 
     }
 

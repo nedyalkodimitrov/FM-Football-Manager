@@ -26,7 +26,6 @@ class PlayerProperties implements PlayerPropertiesInterface
     }
 
     public function LastWaterRecord($user, $userId){
-
         $currentDate = Date('Y-m-d');
         $today = date('Y-m-d', strtotime($currentDate));
 
@@ -35,7 +34,7 @@ class PlayerProperties implements PlayerPropertiesInterface
         if ($water_glasses == null) {
             $waterTime = 0;
         }else {
-            $waterTime = strtotime($water_glasses[0]->getDate());
+            $waterTime = strtotime($water_glasses->getDate());
         }
 
         $waterDay = date('Y-m-d',$waterTime);
@@ -44,26 +43,87 @@ class PlayerProperties implements PlayerPropertiesInterface
         }
 
         return  $this->waterGlassesRepo->getLastWaterGlass($userId);
-
     }
-
 
     //Get the team of the player
-    public function PlayerTeam($player){
-
+    public function getTeam($player){
         if($player->getTeam() != null){
-            $playerTeam = $player->getTeam();
-            $devision = $playerTeam->getDevision();
-            $teams = $this->teamRepo->getTeamByDivisionDesc($devision->getId());
-
+            $team = $player->getTeam();
         }else {
-            $playerTeam = $player->getYouthTeams();
-            $devision = $playerTeam->getDivision();
-            $teams = $this->youthTeam->getYouthTeamByDivisionDesc($devision->getId());
+            $team = $player->getYouthTeams();
         }
-        $arr = [$devision, $teams, $playerTeam];
-        return $arr;
+        return $team;
     }
+
+    //Get teams by division
+    public function getTeams($division){
+        $teams = $this->teamRepo->getTeamByDivisionDesc($division->getId());
+        if($teams == null){
+            $teams = $this->youthTeam->getYouthTeamByDivisionDesc($division->getId());
+        }
+
+        return $teams;
+    }
+
+
+
+   public  function setInjured($player, $statuses, $status, $playersInjuredRepo){
+       $checker1 = true;
+       $checker2 = true;
+
+       foreach ($statuses as $stat){
+           if ($stat->getStartTreatment() >= $status->getStartTreatment()&& $status->getStartTreatment() <= $stat->getEndTreatment()){
+               $checker1 = false;
+           }
+           if ($stat->getEndTreatment() >= $status->getEndTreatment()&& $status->getEndTreatment() <= $stat->getEndTreatment()){
+               $checker2 = false;
+           }
+       }
+       if ($checker1 == true && $checker2 == true) {
+           $status->setUsers($player);
+           $playersInjuredRepo->save($status);
+           return 1;
+       }else{
+           return 2;
+       }
+    }
+    //Get schedule for training
+   public function getSchedule($coaches){
+       $schedule = [];
+       foreach ($coaches as $coache){
+           if($coache->getTeamPosition()->getId() == 1){
+               $headCoache = $coache;
+               $schedule = $headCoache->getSchedule();
+           }else{
+               $headCoache = null;
+           }
+       }
+       return $schedule;
+   }
+
+   public function getHeadCoache($coaches){
+       foreach ($coaches as $coache){
+           if($coache->getTeamPosition()->getId() == 1){
+               $headCoache = $coache;
+           }else{
+               $headCoache = null;
+           }
+       }
+       return $headCoache;
+   }
+    // Generate Name by time
+   public function generateName($name){
+       $time = date('h');
+
+       if($time >7 && $time < 10){
+           return "Добро утро, господин ".$name;
+       }else if($time >= 10 && $time< 17){
+        return "Добър ден, господин ".$name;
+       }
+       return "Добър вечер, господин ".$name;
+   }
+
+
 }
 
 

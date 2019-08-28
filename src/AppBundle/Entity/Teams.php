@@ -69,7 +69,7 @@ class Teams
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Division", inversedBy="teams")
      * @ORM\JoinColumn(name="division_id", referencedColumnName="id")
      */
-    private $devision;
+    private $division;
 
 
     /**
@@ -125,24 +125,6 @@ class Teams
      * @ORM\JoinColumn(name="country", referencedColumnName="id")
      */
     private $country;
-
-
-//    /**
-//     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamCups", mappedBy="team")
-//     */
-//    private $cups;
-//    /**
-//     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamCoacheRegister", mappedBy="teams")
-//     */
-//    private $teamCoacheRegister;
-//
-//    /**
-//     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamPlayerRegister", mappedBy="teams")
-//     */
-//    private $teamPlayerRegister;
-
-
-
 
 
     /**
@@ -254,17 +236,17 @@ class Teams
     /**
      * @return mixed
      */
-    public function getDevision()
+    public function getDivision()
     {
-        return $this->devision;
+        return $this->division;
     }
 
     /**
-     * @param mixed $devision
+     * @param mixed $division
      */
-    public function setDevision($devision)
+    public function setDivision($division)
     {
-        $this->devision = $devision;
+        $this->division = $division;
     }
 
     /**

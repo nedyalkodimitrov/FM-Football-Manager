@@ -11,6 +11,6 @@ interface PlayerPropertiesInterface
 
      public function LastWaterRecord($user, $userId);
 
-     public function PlayerTeam($player);
+     public function getTeam($player);
 
 }

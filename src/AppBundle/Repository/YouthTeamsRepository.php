@@ -19,7 +19,7 @@ class YouthTeamsRepository extends \Doctrine\ORM\EntityRepository
         parent::__construct($em, new \Doctrine\ORM\Mapping\ClassMetadata(YouthTeams::class));
     }
 
-    public function getYouthTeamByDivisionDesc($devisionId){
-       return $this->_em->getRepository(YouthTeams::class)->findBy(['devision' => $devisionId], ['points' => 'DESC']);
+    public function getYouthTeamByDivisionDesc($divisionId){
+       return $this->_em->getRepository(YouthTeams::class)->findBy(['division' => $divisionId], ['points' => 'DESC']);
     }
 }

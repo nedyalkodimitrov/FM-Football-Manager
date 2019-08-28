@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Admins;
 use AppBundle\Entity\Coaches;
 use AppBundle\Entity\CoachesPositions;
 use AppBundle\Entity\Division;
@@ -24,6 +25,9 @@ class AdminController extends Controller
      * @Route("/admin", name = "adminHomeAction" )
      */
     public function CoacheViewAction(Request $request){
+        $user = new Users();
+        $coache = new Coaches();
+        $player = new Players();
 
         $admin = $this->getUser()->getAdmin();
         $team = $admin->getTeam();
@@ -32,26 +36,22 @@ class AdminController extends Controller
         $coaches = $team->getCoaches();
         $youthTeams = $team->getYouthTeams();
 
-
-
-        $user = new Users();
-        $coache = new Coaches();
-        $player = new Players();
         $form_user = $this->createForm(UsersType::class, $user);
         $form_coaches = $this->createForm(CoachesType::class, $coache);
         $form_player = $this->createForm(PlayersType::class, $player);
 
         $form_player->handleRequest($request);
         $form_user->handleRequest($request);
+
         $form_coaches->handleRequest($request);
 
+        //Create player
         if($form_player->isSubmitted() && $form_user->isSubmitted()) {
             $playerPhone = $player->getPhone();
-            $validPhoneNum = $this->getDoctrine()->getRepository(Players::class)->findBy(array('phone' => $playerPhone));
-            if (count($validPhoneNum) > 0) {
-                var_dump(1);
+             if ($this->CheckPhoneNumber($playerPhone)) {
+               return 1;
             } else {
-                $positionId = json_decode($request->request->get('position'));
+                $positionId = $this->GetPropFromRequest('position');
                 $position = $this->getDoctrine()->getRepository(Positions::class)->find((int)$positionId);
                 $player->setPosition($position);
                 $player->setTeam($admin->getTeam());
@@ -63,45 +63,35 @@ class AdminController extends Controller
                 $player->setUserId($user);
                 $em->persist($player);
                 $em->flush();
+
                 return $this->redirectToRoute('adminHomeAction');
             }
         }
 
+        //Create coache
+        if($coache->getPhone() != null && $user->getName() != null && $user->getFName() != null) {
+            $coachePhone = $coache->getPhone();
 
-            if($coache->getPhone() != null && $user->getName() != null && $user->getFName() != null) {
+            if ($this->CheckPhoneNumber($coachePhone)) {
+              return 1;
+            } else {
+                $positionId = $this->GetPropFromRequest('position');
+                $position = $this->getDoctrine()->getRepository(CoachesPositions::class)->find((int)$positionId);
 
-                $coachePhone = $coache->getPhone();
+                $coache->setTeamPosition($position);
+                $coache->setTeam($admin->getTeam());
 
-                $playerValidPhoneNum = $this->getDoctrine()->getRepository(Players::class)->findBy(array('phone' => $coachePhone));
-                $coacheValidPhoneNum = $this->getDoctrine()->getRepository(Coaches::class)->findBy(array('phone' => $coachePhone));
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
 
-                if (count($playerValidPhoneNum) > 0 || count($coacheValidPhoneNum) > 0) {
-                    var_dump(1);
-                    exit;
-                } else {
+                $coache->setUserId($user);
+                $em->persist($coache);
+                $em->flush();
 
-                    $positionId = json_decode($request->request->get('position'));
-                    $position = $this->getDoctrine()->getRepository(CoachesPositions::class)->find((int)$positionId);
-
-                    $coache->setTeamPosition($position);
-                    $coache->setTeam($admin->getTeam());
-
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($user);
-                    $em->flush();
-
-                    $coache->setUserId($user);
-                    $em->persist($coache);
-                    $em->flush();
-
-                    var_dump("2");
-                    exit;
-                }
-
+                return 2;
             }
-
-
-
+        }
 
         return $this->render('admin/home.html.twig', array('profile_img' => $admin->getTeam()->getImage(),
             'playersNum' => count($players),
@@ -115,7 +105,7 @@ class AdminController extends Controller
     /**
      * @Route("/admin/youthTeams", name= "youthTeams" )
      */
-    public function Teams(Request $request){
+    public function ListTeams(Request $request){
         $user = $this->getUser()->getAdmin();
         $team = $user->getTeam();
         $youthTeams = $team->getYouthTeams();
@@ -126,9 +116,7 @@ class AdminController extends Controller
             'youthTeams' =>$youthTeams,
             'profile_img' => $this->getUser()->getAdmin()->getTeam()->getImage(),
             'divisions' => $divisions,
-
         ));
-
     }
 
 
@@ -145,6 +133,7 @@ class AdminController extends Controller
         $youthTeam->setName($request->get('name'));
         $division = $this->getDoctrine()->getRepository(Division::class)->find($request->get('division'));
         $youthTeam->setDivision($division);
+
         if ($youthTeam->getName() != null && $youthTeam->getDivision() != null) {
             $youthTeam->setCountry($country);
             $youthTeam->setMotherTeam($team);
@@ -160,7 +149,6 @@ class AdminController extends Controller
             $em->flush();
 
             return $this->redirectToRoute('youthTeams');
-
         }
 
 
@@ -168,30 +156,27 @@ class AdminController extends Controller
         /**
          * @Route("/admin/deleteYouthTeam/{id}", name= "deleteYouthTeam" )
          */
-        public function DeleteYouthTeam($id, Request $request){
+    public function DeleteYouthTeam($id, Request $request){
+        $em = $this->getDoctrine()->getManager();
 
-            $youthTeam = $this->getDoctrine()->getRepository(YouthTeams::class)->find(intval($id));
-            $players = $this->getDoctrine()->getRepository(Players::class)->findBy(["youthTeams" =>intval($id)]);
-            $coaches= $this->getDoctrine()->getRepository(Coaches::class)->findBy(["youthTeam" =>intval($id)]);
-            $em = $this->getDoctrine()->getManager();
-           foreach ($coaches as $coache){
-               $em->remove($coache);
-               $em->flush();
-           }
-            foreach ($players as $player){
-               $em->remove($player);
-               $em->flush();
-           }
+        $youthTeam = $this->getDoctrine()->getRepository(YouthTeams::class)->find(intval($id));
+        $players = $this->getDoctrine()->getRepository(Players::class)->findBy(["youthTeams" =>intval($id)]);
+        $coaches= $this->getDoctrine()->getRepository(Coaches::class)->findBy(["youthTeam" =>intval($id)]);
 
+        foreach ($coaches as $coache){
+           $em->remove($coache);
+           $em->flush();
+        }
 
-            $em->remove($youthTeam);
-            $em->flush();
+        foreach ($players as $player){
+           $em->remove($player);
+           $em->flush();
+        }
 
-           return $this->redirectToRoute('youthTeams');
+        $em->remove($youthTeam);
+        $em->flush();
 
-
-
-
+        return $this->redirectToRoute('youthTeams');
     }
 
 
@@ -200,7 +185,11 @@ class AdminController extends Controller
      */
     public function YouthTeam($id, Request $request){
 
+        $user = new Users();
+        $coache = new Coaches();
+        $player = new Players();
         $admin = $this->getUser()->getAdmin();
+
         $youthTeam = $this->getDoctrine()->getRepository(YouthTeams::class)->find($id);
         if ($youthTeam->getMotherTeam()->getAdmin()[0]->getId() != $admin->getId()){
             return $this->redirectToRoute(adminHomeAction);
@@ -209,9 +198,6 @@ class AdminController extends Controller
         $players = $youthTeam->getPlayers();
         $coaches = $youthTeam->getCoaches();
 
-        $user = new Users();
-        $coache = new Coaches();
-        $player = new Players();
         $form_user = $this->createForm(UsersType::class, $user);
         $form_player = $this->createForm(PlayersType::class, $player);
         $form_coaches = $this->createForm(CoachesType::class, $coache);
@@ -223,15 +209,12 @@ class AdminController extends Controller
         if($form_player->isSubmitted() && $form_user->isSubmitted()) {
 
             $playerPhone = $player->getPhone();
-            $playerValidPhoneNum = $this->getDoctrine()->getRepository(Players::class)->findBy(array('phone' => $playerPhone));
-            $coacheValidPhoneNum = $this->getDoctrine()->getRepository(Coaches::class)->findBy(array('phone' => $playerPhone));
 
-            if (count($playerValidPhoneNum) > 0 || count($coacheValidPhoneNum) > 0) {
-                var_dump(1);
+            if ($this->CheckPhoneNumber($playerPhone)) {
+                return 1;
             } else {
 
-                $positionId = json_decode($request->request->get('position'));
-
+                $positionId = $this->GetPropFromRequest('position');
                 $position = $this->getDoctrine()->getRepository(Positions::class)->find((int)$positionId);
 
                 $player->setPosition($position);
@@ -246,25 +229,17 @@ class AdminController extends Controller
                 $em->persist($player);
                 $em->flush();
 
-                var_dump("2");
-                exit;
+                return 2;
             }
-
         }
 
         if($form_coaches->isSubmitted() && $form_user->isSubmitted()) {
+            $coachePhoneNumber = $coache->getPhone();
 
-            $coachePhone = $coache->getPhone();
-
-            $playerValidPhoneNum = $this->getDoctrine()->getRepository(Players::class)->findBy(array('phone' => $coachePhone));
-            $coacheValidPhoneNum = $this->getDoctrine()->getRepository(Coaches::class)->findBy(array('phone' => $coachePhone));
-
-            if (count($playerValidPhoneNum) > 0 || count($coacheValidPhoneNum) > 0) {
-                var_dump(1);
-                exit;
+            if ($this->CheckPhoneNumber($coachePhoneNumber)) {
+                return 1;
             } else {
-
-                $positionId = json_decode($request->request->get('position'));
+                $positionId = $this->GetPropFromRequest('position');
                 $position = $this->getDoctrine()->getRepository(CoachesPositions::class)->find((int)$positionId);
 
                 $coache->setTeamPosition($position);
@@ -278,18 +253,14 @@ class AdminController extends Controller
                 $em->persist($coache);
                 $em->flush();
 
-                var_dump("2");
-                exit;
+                return 2;
             }
-
         }
-
-
 
         return $this->render('admin/youthTeam.html.twig', array('players' =>$players,
             'coaches' => $coaches,
             'teamId' => $id,
-            'profile_img' =>  $this->getUser()->getAdmin()->getTeam()->getImage()));
+            'profile_img' =>  $admin->getTeam()->getImage()));
 
     }
 
@@ -355,8 +326,7 @@ class AdminController extends Controller
         $em->remove($players);
         $em->remove($user);
         $em->flush();
-        echo 1;
-        exit;
+        return 1;
     }
     /**
      * @Route("/admin/deleteCoache/{id}" , name = "deleteCoache")
@@ -372,8 +342,7 @@ class AdminController extends Controller
         }
 
         if ($team->getId() != $this->getUser()->getAdmin()->getTeam()->getId()){
-            echo 0;
-            exit;
+            return 0;
         }
 
         $user = $coache->getUserId();
@@ -381,10 +350,28 @@ class AdminController extends Controller
         $em->remove($coache);
         $em->remove($user);
         $em->flush();
-        echo 1;
-        exit;
+        return 1;
+    }
+
+
+
+    private function CheckPhoneNumber($phone){
+        $playerPhoneNumber = $this->getDoctrine()->getRepository(Players::class)->findBy(array('phone' => $phone));
+        $coachePhoneNumber = $this->getDoctrine()->getRepository(Coaches::class)->findBy(array('phone' => $phone));
+        $adminPhoneNumber = $this->getDoctrine()->getRepository(Admins::class)->findBy(array('phone' => $phone));
+
+        if (count($playerPhoneNumber) > 0 || count($coachePhoneNumber) > 0 || count($adminPhoneNumber) > 0  ){
+            return true;
+        }
+        return false;
 
     }
+
+    private  function GetPropFromRequest($prop, Request $request){
+        return json_decode($request->request->get($prop));
+    }
+
+
 
 }
 

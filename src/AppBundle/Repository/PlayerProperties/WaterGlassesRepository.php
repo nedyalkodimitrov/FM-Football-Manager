@@ -24,13 +24,13 @@ class WaterGlassesRepository extends \Doctrine\ORM\EntityRepository
     public function getWaterGlassesByUserDESC($userId){
        return $this->_em
             ->getRepository(WaterGlasses::class)
-            ->findBy(['playerId' => $userId], [ 'id' => 'DESC']);
+            ->findBy(['playerId' => $userId], [ 'id' => 'DESC'])[0];
     }
 
     public function getWaterGlassesByUserASC($userId){
         return $this->_em
             ->getRepository(WaterGlasses::class)
-            ->findBy(['playerId' => $userId], [ 'id' => 'ASC']);
+            ->findBy(['playerId' => $userId], [ 'id' => 'ASC'])[0];
     }
 
     public function setWaterGlass($player, $date){

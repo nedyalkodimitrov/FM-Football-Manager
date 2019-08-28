@@ -44,117 +44,11 @@ class Players
      */
     private $birthDay;
 
-
     /**
-     * @var float
-     *
-     * @ORM\Column(name="statusFromCoaches", type="float", nullable=true)
+     *  @ORM\OneToOne(targetEntity="AppBundle\Entity\PlayerProperties\PlayerStats")
+     * @ORM\JoinColumn(name="stats_id", referencedColumnName="id")
      */
-    private $statusFromCoaches;
-
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="weight", type="float", nullable=true)
-     */
-    private $weight;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="height", type="integer", nullable=true)
-     */
-    private $height;
-
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="fat", type="float", nullable=true)
-     */
-    private $fat;
-
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="pace", type="float", nullable=true)
-     */
-    private $pace;
-
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="tacticks", type="float", nullable=true)
-     */
-    private $tacticks;
-
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="technique", type="float", nullable=true)
-     */
-    private $technique;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="pass", type="float", nullable=true)
-     */
-    private $pass;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="shot", type="float", nullable=true)
-     */
-    private $shot;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="dribble", type="float", nullable=true)
-     */
-    private $dribble;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="longPass", type="float", nullable=true)
-     */
-    private $longPass;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="relax", type="float", nullable=true)
-     */
-    private $relax;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="willpower", type="float", nullable=true)
-     */
-    private $willpower;
-
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="work", type="float", nullable=true)
-     */
-    private $work;
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="perspective", type="float", nullable=true)
-     */
-    private $perspective;
-
+    private $stats;
 
 
     /**
@@ -196,7 +90,6 @@ class Players
      */
     private $youthTeams;
 
-
     /**
      * @Assert\Image(
      *     allowLandscape = false,
@@ -207,14 +100,12 @@ class Players
      */
     public $image;
 
-
     /**
      * @var string
      *
      * @ORM\Column(name="status", type="integer", nullable=true   )
      */
     public $status;
-
 
     /**
      * @var string
@@ -229,17 +120,25 @@ class Players
      */
     private $treatmentInformation;
 
-//    /**
-//     * Many Users have Many Users.
-//     * @ORM\OneToMany(targetEntity="AppBundle\Entity\YouthTeamPlayerRegister", mappedBy="players")
-//     */
-//    private $youthTeamPlayerRegister;
-//    /**
-//     * Many Users have Many Users.
-//     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamPlayerRegister", mappedBy="players")
-//     */
-//    private $teamPlayerRegister;
+    /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="Players")
+     * @ORM\JoinTable(name="player_To_Player_Request",
+     *      joinColumns={@ORM\JoinColumn(name="from_player", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="to_player", referencedColumnName="id")}
+     *      )
+     */
+    private $playerToPlayerRequest;
 
+    /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="Teams")
+     * @ORM\JoinTable(name="player_To_Team_Request",
+     *      joinColumns={@ORM\JoinColumn(name="from_player", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="to_team", referencedColumnName="id")}
+     *      )
+     */
+    private $playerToTeamRequest;
 
     /**
      * Get id
@@ -250,6 +149,23 @@ class Players
     {
         return $this->id;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStats()
+    {
+        return $this->stats;
+    }
+
+    /**
+     * @param mixed $stats
+     */
+    public function setStats($stats)
+    {
+        $this->stats = $stats;
+    }
+
 
     /**
      * @return int
@@ -299,85 +215,6 @@ class Players
         $this->birthDay = $birthDay;
     }
 
-    /**
-     * @return float
-     */
-    public function getStatusFromCoaches()
-    {
-        return $this->statusFromCoaches;
-    }
-
-    /**
-     * @param float $statusFromCoaches
-     */
-    public function setStatusFromCoaches($statusFromCoaches)
-    {
-        $this->statusFromCoaches = $statusFromCoaches;
-    }
-
-    /**
-     * @return float
-     */
-    public function getWeight()
-    {
-        return $this->weight;
-    }
-
-    /**
-     * @param float $weight
-     */
-    public function setWeight($weight)
-    {
-        $this->weight = $weight;
-    }
-
-    /**
-     * @return int
-     */
-    public function getHeight()
-    {
-        return $this->height;
-    }
-
-    /**
-     * @param int $height
-     */
-    public function setHeight($height)
-    {
-        $this->height = $height;
-    }
-
-    /**
-     * @return float
-     */
-    public function getFat()
-    {
-        return $this->fat;
-    }
-
-    /**
-     * @param float $fat
-     */
-    public function setFat($fat)
-    {
-        $this->fat = $fat;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPace()
-    {
-        return $this->pace;
-    }
-
-    /**
-     * @param float $pace
-     */
-    public function setPace($pace)
-    {
-        $this->pace = $pace;
-    }
 
     /**
      * @return mixed
@@ -539,168 +376,56 @@ class Players
         $this->treatmentInformation = $treatmentInformation;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerToPlayerRequest()
+    {
+        return $this->playerToPlayerRequest;
+    }
+
+    /**
+     * @param mixed $playerToPlayerRequest
+     */
+    public function setPlayerToPlayerRequest($playerToPlayerRequest)
+    {
+        $this->playerToPlayerRequest = $playerToPlayerRequest;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayerToTeamRequest()
+    {
+        return $this->playerToTeamRequest;
+    }
+
+    /**
+     * @param mixed $playerToTeamRequest
+     */
+    public function setPlayerToTeamRequest($playerToTeamRequest)
+    {
+        $this->playerToTeamRequest = $playerToTeamRequest;
+    }
+
     public function _toString(){
         return $this->userId->name;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTacticks()
-    {
-        return $this->tacticks;
-    }
-
-    /**
-     * @param float $tacticks
-     */
-    public function setTacticks($tacticks)
-    {
-        $this->tacticks = $tacticks;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTechnique()
-    {
-        return $this->technique;
-    }
-
-    /**
-     * @param float $technique
-     */
-    public function setTechnique($technique)
-    {
-        $this->technique = $technique;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPass()
-    {
-        return $this->pass;
-    }
-
-    /**
-     * @param float $pass
-     */
-    public function setPass($pass)
-    {
-        $this->pass = $pass;
-    }
-
-    /**
-     * @return float
-     */
-    public function getShot()
-    {
-        return $this->shot;
-    }
-
-    /**
-     * @param float $shot
-     */
-    public function setShot($shot)
-    {
-        $this->shot = $shot;
-    }
-
-    /**
-     * @return float
-     */
-    public function getDribble()
-    {
-        return $this->dribble;
-    }
-
-    /**
-     * @param float $dribble
-     */
-    public function setDribble($dribble)
-    {
-        $this->dribble = $dribble;
-    }
-
-    /**
-     * @return float
-     */
-    public function getLongPass()
-    {
-        return $this->longPass;
-    }
-
-    /**
-     * @param float $longPass
-     */
-    public function setLongPass($longPass)
-    {
-        $this->longPass = $longPass;
-    }
-
-    /**
-     * @return float
-     */
-    public function getRelax()
-    {
-        return $this->relax;
-    }
-
-    /**
-     * @param float $relax
-     */
-    public function setRelax($relax)
-    {
-        $this->relax = $relax;
-    }
-
-    /**
-     * @return float
-     */
-    public function getWillpower()
-    {
-        return $this->willpower;
-    }
-
-    /**
-     * @param float $willpower
-     */
-    public function setWillpower($willpower)
-    {
-        $this->willpower = $willpower;
-    }
-
-    /**
-     * @return float
-     */
-    public function getWork()
-    {
-        return $this->work;
-    }
-
-    /**
-     * @param float $work
-     */
-    public function setWork($work)
-    {
-        $this->work = $work;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPerspective()
-    {
-        return $this->perspective;
-    }
-
-    /**
-     * @param float $perspective
-     */
-    public function setPerspective($perspective)
-    {
-        $this->perspective = $perspective;
     }
 
 
