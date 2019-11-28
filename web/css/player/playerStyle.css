@@ -1,6 +1,7 @@
+@import url('../typography.css');
 *{
     transition: 0.2s;
-    font-family: 'Karla', sans-serif;
+
 
 }
 
@@ -293,7 +294,7 @@ thead, tbody tr {
 
 input {
 
-    font: 15px/24px 'Raleway', sans-serif;
+
     color: #333;
     width: 100%;
     box-sizing: border-box;

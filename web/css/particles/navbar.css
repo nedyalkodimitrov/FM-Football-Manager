@@ -1,0 +1,22 @@
+nav {
+    max-width: 1900px;
+    margin: auto;
+}
+.navbar-link {
+    color: #282828;
+    font-size: 1em;
+}
+.navbar-link:hover{
+    color: #696969;
+}
+.logo{
+    width: 5em;
+}
+.user-nav-profile-img{
+    object-fit: cover;
+    width: 2em;
+    height: 2em;
+    border-radius: 100%;
+
+}
+
