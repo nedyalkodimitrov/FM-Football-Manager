@@ -46,12 +46,10 @@ class AddConstraintValidatorsPassTest extends TestCase
         $this->assertEquals($expected, $container->getDefinition((string) $validatorFactory->getArgument(0)));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The service "my_abstract_constraint_validator" tagged "validator.constraint_validator" must not be abstract.
-     */
     public function testAbstractConstraintValidator()
     {
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('The service "my_abstract_constraint_validator" tagged "validator.constraint_validator" must not be abstract.');
         $container = new ContainerBuilder();
         $validatorFactory = $container->register('validator.validator_factory')
             ->addArgument([]);

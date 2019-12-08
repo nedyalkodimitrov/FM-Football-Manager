@@ -33,14 +33,12 @@ final class Dotenv
     private $lineno;
     private $data;
     private $end;
-    private $state;
     private $values;
 
     /**
      * Loads one or several .env files.
      *
-     * @param string    $path  A file to load
-     * @param ...string $paths A list of additional files to load
+     * @param string $path A file to load
      *
      * @throws FormatException when a file has a syntax error
      * @throws PathException   when a file does not exist or is not readable
@@ -111,27 +109,27 @@ final class Dotenv
         $this->lineno = 1;
         $this->cursor = 0;
         $this->end = \strlen($this->data);
-        $this->state = self::STATE_VARNAME;
+        $state = self::STATE_VARNAME;
         $this->values = [];
         $name = '';
 
         $this->skipEmptyLines();
 
         while ($this->cursor < $this->end) {
-            switch ($this->state) {
+            switch ($state) {
                 case self::STATE_VARNAME:
                     $name = $this->lexVarname();
-                    $this->state = self::STATE_VALUE;
+                    $state = self::STATE_VALUE;
                     break;
 
                 case self::STATE_VALUE:
                     $this->values[$name] = $this->lexValue();
-                    $this->state = self::STATE_VARNAME;
+                    $state = self::STATE_VARNAME;
                     break;
             }
         }
 
-        if (self::STATE_VALUE === $this->state) {
+        if (self::STATE_VALUE === $state) {
             $this->values[$name] = '';
         }
 

@@ -200,16 +200,14 @@ class DotenvTest extends TestCase
         $this->assertSame('BAZ', $bar);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Dotenv\Exception\PathException
-     */
     public function testLoadDirectory()
     {
+        $this->expectException('Symfony\Component\Dotenv\Exception\PathException');
         $dotenv = new Dotenv();
         $dotenv->load(__DIR__);
     }
 
-    public function testServerSuperglobalIsNotOverriden()
+    public function testServerSuperglobalIsNotOverridden()
     {
         $originalValue = $_SERVER['argc'];
 
@@ -219,7 +217,7 @@ class DotenvTest extends TestCase
         $this->assertSame($originalValue, $_SERVER['argc']);
     }
 
-    public function testEnvVarIsNotOverriden()
+    public function testEnvVarIsNotOverridden()
     {
         putenv('TEST_ENV_VAR=original_value');
         $_SERVER['TEST_ENV_VAR'] = 'original_value';
@@ -230,7 +228,7 @@ class DotenvTest extends TestCase
         $this->assertSame('original_value', getenv('TEST_ENV_VAR'));
     }
 
-    public function testHttpVarIsPartiallyOverriden()
+    public function testHttpVarIsPartiallyOverridden()
     {
         $_SERVER['HTTP_TEST_ENV_VAR'] = 'http_value';
 

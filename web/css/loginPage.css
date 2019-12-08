@@ -1,7 +1,22 @@
 
 body {
    background-color: white;
+    height: 100vh;
 }
+.page-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 100vw;
+    margin: 0 auto;
+}
+
+img {
+    height: 5em;
+
+}
+
 
 #btn  {
     background-color: #fa6b4d;
@@ -19,14 +34,20 @@ body {
 
 
 input {
-
-    font: 15px/24px 'Raleway', sans-serif;
+    background-color: white;
     color: #333;
     width: 100%;
     box-sizing: border-box;
     letter-spacing: 1px;
 }
 
+.btn{
+    background-color: #fa6b4d;
+    border-color: #f94019;
+}
+.btn:hover {
+    background-color: #f94019;
+}
 
 .effect-2 {
     border: 0;
@@ -47,11 +68,11 @@ input {
     left: 0;
 }
 
-img {
 
-    height: 20%;
-
+option {
+    width: 30px;
 }
+
 
 .select{
 
@@ -67,10 +88,6 @@ img {
     border-bottom: 1px solid #f94019;
         box-shadow: none;
 
-}
-
-option {
-    width: 30px;
 }
 
 .a-signUp {

@@ -1,0 +1,25 @@
+.water-container {
+    box-sizing: border-box;
+    border: 1px solid #dddfe2;
+    border-radius: 15px;
+
+}
+
+.water-glass {
+    width: 150px;
+
+}
+
+.water-button {
+    background: none;
+    border: none;
+    padding: 2rem 2rem 0 2rem;
+
+
+}
+
+.water-button:active,
+.water-button:focus {
+    outline:  none;
+
+}

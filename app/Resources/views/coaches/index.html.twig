@@ -1,39 +1,45 @@
 
 {% extends 'coaches/base.html.twig' %}
 {% block body %}
-    <div id="container ">
+    <div id="container">
         <div class="row mt-5  justify-content-center">
-            <div class="col-lg-11 col-md-7 col-sm-11 col-10  div-charts row pb-3">
-                <div class="col-12 text-center mt-4">
-                    <h2 >Основни характеристики</h2>
+            <div class="col-lg-11 col-md-7 col-sm-11 col-9  main-charts-container row pb-3">
+                <div class="col-12 text-center">
+                    <h4 class="mt-4  mb-5 information-charts-text">Основни характеристики</h4>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
-                    <p > {{ playersCount }}</p>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center chart-container ">
+                    <div class="information-container ">
+                          <p>15</p>
+                    </div>
                     <div class="fat-percent-div">
                         <h3>
                             <span class="label green badge fat-percent-badge">Играча в отбора</span>
                         </h3>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
-                    <p > 8 <i class="fa fa-cup" aria-hidden="true"></i></p>
-                    <div class="fat-percent-div">
-                        <h3>
-                            <span class="label green badge fat-percent-badge">Временно класиране</span>
-                        </h3>
+                <div class="col-lg-4 col-sm-12 col-md-12 mt-2 text-center chart-container">
+                    <div class="information-container">
+                      <p>1</p>
                     </div>
+                    <h3>
+                        <span class="label green badge ">Временно класиране</span>
+                    </h3>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
-                    <p> А група </p>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  chart-container">
+                    <div class="information-container">
+                       <p>EfBet Cup</p>
+                    </div>
                     <div class="fat-percent-div">
                         <h3>
-                            <span class="label green badge fat-percent-badge">Първенство</span>
+                            <span class="green badge fat-percent-badge  label">Първенство</span>
                         </h3>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 
 
 

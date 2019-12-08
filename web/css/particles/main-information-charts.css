@@ -2,7 +2,7 @@
     box-sizing: border-box;
     max-width: 1900px;
     margin: auto;
-    border:1px solid #dddfe2;
+    border: 2px solid #dddfe2;
     /*box-shadow: 1px 1px 1px 1px rgba(89, 88, 89, 0.2);*/
     border-radius: 15px;
     height: auto;
@@ -10,8 +10,10 @@
 }
 .chart-container, .min-chart{
     display: flex;
+    flex-flow: row ;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
 }
 canvas{
     height: 10em;

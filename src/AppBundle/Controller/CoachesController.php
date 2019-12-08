@@ -19,14 +19,22 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CoachesController extends Controller
 {
+    
+
+    public function __construct()
+    {
+
+
+    }
+
+
     /**
-     * @Route("/coaches", name = "coacheViewAction" )
+     * @Route("/coache", name = "coacheViewAction" )
      */
     public function CoacheViewAction(){
 
-        $user = $this->getUser();
-        $userId = $user->getId();
-        $coache = $user->getCoaches();
+
+        $coache = $this->getUser()->getCoaches();
 
         if($coache->getTeam() != null){
             $teamOfCoache = $coache->getTeam();
@@ -36,35 +44,13 @@ class CoachesController extends Controller
 
         $players = $teamOfCoache->getPlayers();
 
-        $userCups = $user->getCups();
-        $cupsCounter = 0;
-        $youthCups = 0;
-        $adultCups = 0;
-//       var_dump($cup->getYouthCups());
-//       exit;
-        foreach ($userCups as $cup){
-//            var_dump($cup->getYouthCups());
-//            if (count($cup->getYouthCups()) != 0){
-//                $cupsCounter++;
-//                $youthCups++;
-//                var_dump(2);
-//                exit;
-//            }
-            if (count($cup->getCups()) != 0){
-                $cupsCounter++;
-                $adultCups++;
-//                var_dump(3);
-//                exit;
-            }
-        }
-
         return $this->render('coaches/index.html.twig', array(
             'playersCount' => count($players),
-            'cups' => $cupsCounter,
+            'cups' => 0,
             'players' => $players,
-            'name' => $user->getName() ,
-            'fName' => $user->getFName(),
-            'profile_img' => $user->getCoaches()->getImage()));
+            'name' => $this->getUser()->getName() ,
+            'fName' => $this->getUser()->getFName(),
+            'profile_img' => $this->getUser()->getCoaches()->getImage()));
     }
 
 
@@ -73,10 +59,7 @@ class CoachesController extends Controller
      */
     public function TrainingView(Request $request)
     {
-
-        $user = $this->getUser();
-        $userId = $user->getId();
-        $coache = $user->getCoaches();
+        $coache = $this->getUser()->getCoaches();
 
         if($coache->getTeam() != null){
             $teamOfCoache = $coache->getTeam();
@@ -135,14 +118,14 @@ class CoachesController extends Controller
     public function TrainingCalendarViewAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser()->getCoaches();
+        $coach = $this->getUser()->getCoaches();
 
         $schedule = new Schedule();
         $form = $this->createForm(ScheduleType::class, $schedule);
         $form->handleRequest($request);
 
         $schedules  = [];
-        $schedules2 = $this->getDoctrine()->getRepository(Schedule::class)->findBy(['coaches' => $user->getId()]);
+        $schedules2 = $this->getDoctrine()->getRepository(Schedule::class)->findBy(['coaches' => $coach->getId()]);
 
         $Current = strval(Date('d/m/Y'));
         $currentMonth = explode('/', $Current);
@@ -159,7 +142,7 @@ class CoachesController extends Controller
 
 
         if ($form->isSubmitted()) {
-            $schedule->setCoaches($user);
+            $schedule->setCoaches($coach);
             $em = $this->getDoctrine()->getManager();
             $em->persist($schedule);
             $em->flush();
@@ -168,7 +151,7 @@ class CoachesController extends Controller
 
         return $this->render('coaches/trainings/trainingCalendar.html.twig',
             array("form" => $form->createView(),
-            'profile_img' => $user->getImage(),
+            'profile_img' => $coach->getImage(),
             'schedules' => $schedules));
     }
 
@@ -211,7 +194,7 @@ class CoachesController extends Controller
                 array("image" => $user->getImage(),'form' => $form->createView()));
         }
 
-        return $this->render('settings/settings.html.twig',
+        return $this->render('coaches/settings/settings.html.twig',
             array('form' => $form->createView(), "image" => $this->getUser()->getCoaches()->getImage(), ));
     }
 
@@ -229,7 +212,7 @@ class CoachesController extends Controller
     {
         $coache = $this->getUser()->getCoaches();
         $player = $this->getDoctrine()->getRepository(Players::class)->find($id);
-
+        $playerStats = $player->getStats();
         $coacheYouthTeam = false;
         $playerYouthTeam = false;
         $players = new Players();
@@ -257,16 +240,16 @@ class CoachesController extends Controller
             return $this->redirectToRoute("trainingView");
         }
 
-
-
         return $this->render('coaches/playerStat.html.twig',
             array(
                 'profile_img' => $coache->getImage(),
                 'player' => $player,
+                'playerStats' => $playerStats,
                 'image' => $this->getUser()->getCoaches()->getImage(),
 
 
-                ));
+                )
+        );
 
     }
 

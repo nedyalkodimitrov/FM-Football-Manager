@@ -2,9 +2,9 @@
     {% block style %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-        <link href="{{ asset("css/playerTemplate.css") }}" rel="stylesheet">
+        <link href="{{ asset("css/playerStyle.css") }}" rel="stylesheet">
         <link href="{{ asset("css/settingsStyle.css") }}" rel="stylesheet">
-        <link href="{{ asset("css/coacheIndex.css") }}" rel="stylesheet">
+        <link href="{{ asset("css/coachStyle.css") }}" rel="stylesheet">
         <link href="{{ asset("mdb/css/mdb.min.css") }}" rel="stylesheet">
         <script type="text/javascript" src="{{ asset("mdb/js/mdb.min.js") }}"></script>
         <script type="text/javascript" src="{{ asset("mdb/js/bootstrap.min.js") }}"></script>
@@ -13,39 +13,80 @@
         <div class=" justify-content-center row mt-4 mb-5">
             <div class="col-12 justify-content-center text-center row ">
                 <div class="text-center information-div row">
+                    <div class="update-information-icon-holder">
+                        <i class="fas fa-pen update-information-icon"></i>
+                    </div>
                     <div class="col-12 row player-visit-container">
-                       <div class="col-4 p-1">
+                       <div class="col-lg-4 col-sm-12 col-12 p-1 ">
                            {% if image == '0' or image == null  %}
-                                 <img src="{{asset("images/user1.png")}}" alt="" class="profile_pic  m-2">
+                                 <img src="{{asset("images/user1.png")}}" alt="" class="profile-pic-changer  m-2">
                            {% else %}
-                               <img src="{{asset("images/" ~ image)}}" alt="" class="profile_pic m-2">
+                               <img src="{{asset("images/" ~ image)}}" alt="" class="profile-pic-changer m-2">
                            {% endif %}
-                           <h3> {{ playerName }}</h3>
+                           <h4> {{ playerName }}</h4>
+                           <h6>{{ player.Position.Positions }}</h6>
                        </div>
-                       <div class="col-7 text-center">
-                           <h2 class=" justify-content-center text-center">Статистика </h2>
-                           <div class="col-12 justify-content-center text-center row mt-5">
-                               <div class="col-lg-3 col-sm-4 col-md-3 mr-lg-4 mr-md-4 mr-sm-0 mt-4   myBorderPlayerStat-left  text-center">
-                                   {% if playerStats.Weight == null%}
-                                       <h4>Килограми: 0кг</h4>
-                                   {% else %}
-                                       <h4>Килограми: {{ playerStats.Weight }}кг</h4>
-                                   {% endif %}
+                       <div class=" col-lg-8 col-sm-12 col-12 mx-auto text-center  justify-content-center">
+                           <div class="visiting-player-card-text-holder col-12">
+                               <h3 class=" justify-content-center row">Визитна карта </h3>
+                           </div>
+                           <div class="col-12 justify-content-center text-center row 0">
+                               <div class="col-lg-12 col-sm-4 col-md-6  mt-4 row">
+                                   <div class="col-lg-6 col-sm-4 col-md-6   text-left align-top">
+                                       {% if player.Team == null%}
+                                           <h5>Отбор: Няма</h5>
+                                       {% else %}
+                                           <h5>Отбор: {{ player.Team.Name }}</h5>
+                                       {% endif %}
+                                   </div>
+                                   <div class="col-lg-6 col-sm-4 col-md-6 text-left align-top">
+                                           <h5>Отбелязани голове: 0</h5>
+                                   </div>
                                </div>
-                               <div class="col-lg-3 col-sm-4 col-md-3  ml-lg-4 ml-md-4 ml-sm-0 mt-4   myBorderPlayerStat-left  text-center">
-                                   {% if playerStats.Height == null%}
-                                       <h4>Височина: 0см</h4>
-                                   {% else %}
-                                       <h4>Височина: {{ playerStats.Height }}см</h4>
-                                   {% endif %}
+                               <div class="col-lg-12 col-sm-4 col-md-6  mt-4 row">
+                                   <div class="col-lg-6 col-sm-4 col-md-6   text-left align-top">
+                                       {% if team.Division == null%}
+                                           <h5>Първенство: Няма</h5>
+                                       {% else %}
+                                           <h5>Първенство: {{ team.Division.Name }}</h5>
+                                       {% endif %}
+                                   </div>
+                                   <div class="col-lg-6 col-sm-4 col-md-6 text-left align-top">
+                                           <h5>Асистенции: 0</h5>
+                                   </div>
+                               </div>
+                               <div class="col-lg-12 col-sm-4 col-md-6  mt-4 row">
+                                   <div class="col-lg-6 col-sm-4 col-md-6   text-left align-top">
+                                       {% if player.Country == null%}
+                                           <h5>Националност: Не е зададен</h5>
+                                       {% else %}
+                                           <h5>Националност: {{ player.Country.Name }}</h5>
+                                       {% endif %}
+                                   </div>
+                                   <div class="col-lg-6 col-sm-4 col-md-6 text-left align-top">
+                                           <h5>Изиграни мачове: 0</h5>
+                                   </div>
+                               </div>
+                               <div class="col-lg-12 col-sm-4 col-md-6  mt-4 row">
+                                   <div class="col-lg-6 col-sm-4 col-md-6   text-left align-top">
+                                       {% if player.BirthDay == null%}
+                                           <h5>Ден на раждане: Не е зададен</h5>
+                                       {% else %}
+                                           <h5>Ден на раждане: {{ player.BirthDay |date("d.m.Y")|join }}</h5>
+                                       {% endif %}
+
+                                   </div>
+                                   <div class="col-lg-6 col-sm-4 col-md-6 text-left align-top">
+                                           <h5>Отбелязани голове: 0</h5>
+                                   </div>
                                </div>
                            </div>
                        </div>
                     </div>
-                    {{ form_widget(formPlayer.image, {'attr' : {'class' : 'inputfile', 'id' : 'uploadImage'}})  }}
-                    {{ form_row(formPlayer.save, {'attr' : {'class':'btn'}} ) }}
+{#                    {{ form_widget(formPlayer.image, {'attr' : {'class' : 'inputfile', 'id' : 'uploadImage'}})  }}#}
+{#                    {{ form_row(formPlayer.save, {'attr' : {'class':'btn'}} ) }}#}
                     <div class="col-12 justify-content-center text-center row mt-5">
-                        <h1 class="col-12 text-center">Статистика </h1>
+                        <h1 class="col-12 text-center">Статистически данни</h1>
                         <div class="col-lg-3 col-sm-4 col-md-3 mr-lg-4 mr-md-4 mr-sm-0 mt-4   myBorderPlayerStat-left  text-center">
                             {% if playerStats.Weight == null%}
                                 <h2>Килограми: 0кг</h2>

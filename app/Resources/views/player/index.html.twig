@@ -2,53 +2,67 @@
 {% block body %}
     <div id="container">
         <div class="row mt-5  justify-content-center">
-            <div class="col-lg-11 col-md-7 col-sm-11 col-10  div-charts row pb-3">
+            <div class="col-lg-11 col-md-7 col-sm-11 col-9  main-charts-container row pb-3">
                 <div class="col-12 text-center">
-                    <h2>Основни характеристики</h2>
+                    <h4 class="mt-1 information-charts-text">Основни характеристики</h4>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
-                    <p> {{ playerFat }}<i class="fa fa-percent" aria-hidden="true"></i></p>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center chart-container ">
+                    <div class="information-container">
+                        <span class="min-chart" id="chart-sales" data-percent="15">
+                            <span class="chart-text percent"></span>
+                        </span>
+{#                        <p>15{{ playerFat }} <i class="fa fa-percent " aria-hidden="true"></i></p>#}
+                    </div>
                     <div class="fat-percent-div">
                         <h3>
                             <span class="label green badge fat-percent-badge">Подкожни мазнини</span>
                         </h3>
                     </div>
                 </div>
-                <div class="col-lg-4 col-sm-12 col-md-12 mt-2 text-center">
-                    <span class="min-chart" id="chart-sales" data-percent="56"><span class="percent"></span></span>
+                <div class="col-lg-4 col-sm-12 col-md-12 mt-2 text-center chart-container">
+                    <div class="information-container">
+                        <span class="min-chart" id="chart-sales" data-percent="20">
+                            <span class="chart-text overall"></span>
+                        </span>
+                    </div>
                     <h3>
                         <span class="label green badge ">Обща оценка</span>
                     </h3>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
-                    <p> {{ pace }} km/h </p>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  chart-container">
+                    <div class="information-container">
+                        <span class="min-chart" id="chart-sales" data-percent="102">
+                            <span class="chart-text speed"></span>
+                        </span>
+{#                        <p> {{ pace }} km/h </p>#}
+                    </div>
                     <div class="fat-percent-div">
                         <h3>
-                            <span class="label green badge fat-percent-badge">Скорост</span>
+                            <span class="green badge fat-percent-badge  label">Скорост</span>
                         </h3>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div id="container" class="mv-5 ">
         <div class="row mt-5 justify-content-center ">
-            <div class="col-lg-11 col-md-7 col-sm-11 col-10 p-0 m-0 row justify-content-between ">
-                <div class="col-lg-3 col-12 d-lg-inline-block d-md-noned- d-sm-none water-container p-4  text-center justify-content-center " >
-                    <h2 > Дневен прием на вода</h2>
+            <div class="col-lg-11 col-md-7 col-sm-11 col-9 p-0 m-0 row justify-content-between ">
+                <div class="col-lg-3 col-12 d-lg-inline-block d-md-none d-sm-none water-container p-4   text-center justify-content-center " >
+                    <h5 > Дневен прием на вода</h5>
                     <img src="{{ asset("images/glass-of-water.png") }}" alt="" class="water-glass mt-5 col-12">
                     <div class="col-12 row p-3 pb-lg-2 pb-md-2 pb-sm-2 pb-2 m-auto align-items-center">
                         <button class="water-button  water-button-minus col-4 pr-1 text-right"><i class="fa fa-minus"> </i></button>
-                        <h3 class="col-4 justify-content-center numOfWaterGlasses">{{ waterGlasses }}</h3>
+                        <h4 class="col-4 justify-content-center numOfWaterGlasses">{{ waterGlasses }}</h4>
                         <button class="water-button water-button-plus col-4 pl-1 text-left"> <i class="fa fa-plus"></i></button>
                     </div>
-                    <h4 class="mb-3">1  <i class="fa fa-glasses"></i>- 250ml вода</h4>
                 </div>
 
-                <div class="col-lg-8 col-md-12 col-sm-12 col-12 ml-md-1 ml-sm-1  mx-0 p-0 mt-lg-0 mt-md-0 mt-sm-5 mt-5 row ">
+                <div class="table-container col-lg-8 col-md-12 col-sm-12 col-12 ml-md-1 ml-sm-1 mx-0 p-0 mt-lg-0 mt-md-0 mt-sm-5 mt-5 row ">
                     <div class="table col-12  mh-25" id="teamLeadership-container ">
                         {% if hasTeam %}
-                            <table class="table  table-bordered col-12 "  style="margin-bottom: 0; padding:0">
+                            <table class="table-bordered col-12 "  style="margin-bottom: 0; padding:0">
                                 <tr class="row col-12 p-0 m-0 bg-success">
                                     <th class="col-1"></th>
                                     <th class="col-4 color-white">Име</th>

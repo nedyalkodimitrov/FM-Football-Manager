@@ -14,13 +14,12 @@
 
     <body id="{% block body_id %}{% endblock %}">
 
-        <div class="container text-center mt-5 mb-5">
+        <div class="page-container container text-center ">
             <img src="{{ asset("images/fm.png") }}" alt="">
+
+            {% block body %}{% endblock %}
+
         </div>
-
-        <div id="progress" class="waiting"></div>
-
-        {% block body %}{% endblock %}
 
         {% block footer %}{% endblock %}
 

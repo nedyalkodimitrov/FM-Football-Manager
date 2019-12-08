@@ -14,9 +14,18 @@ nav {
 }
 .user-nav-profile-img{
     object-fit: cover;
-    width: 2em;
-    height: 2em;
+    width: 2.5em;
+    height: 2.5em;
     border-radius: 100%;
+    margin-right: 0.4em;
+}
+.nav-username{
+    display: flex;
+    float: left;
+    font-size: 1em;
+    padding: 0px;
+    margin: auto;
+    margin-right: 2%;
+    color: #383839;
 
 }
-

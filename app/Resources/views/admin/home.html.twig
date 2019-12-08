@@ -1,36 +1,46 @@
 {% extends 'admin/base.html.twig' %}
+{%  block style %}
+    <link rel="stylesheet" href="  {{ asset("css/particles/hiddenFormStyle.css") }}">
+{% endblock %}
 {%  block body %}
-    <div id="container ">
+    <div id="container">
         <div class="row mt-5  justify-content-center">
-            <div class="col-lg-11 col-md-7 col-sm-11 col-10  div-charts row pb-3">
+            <div class="col-lg-11 col-md-7 col-sm-11 col-9  main-charts-container row pb-3">
                 <div class="col-12 text-center">
-                    <h2 >Основни статистики</h2>
+                    <h4 class="mt-4  mb-5 information-charts-text">Основни характеристики</h4>
                 </div>
-                <div class="col-lg-4 col-sm-12 col-md-12 mt-2 text-center">
-                    <p > {{ playersNum }}</p>
-                    <h3>
-                        <span class="label green badge ">Брои играчи</span>
-                    </h3>
-                </div>
-                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
-                    <p > {{ playersNum }}</p>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center chart-container ">
+                    <div class="information-container ">
+                        <p>15</p>
+                    </div>
                     <div class="fat-percent-div">
                         <h3>
-                            <span class="label green badge fat-percent-badge">Място в класирането</span>
+                            <span class="label green badge fat-percent-badge">Играча в отбора</span>
                         </h3>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  ">
-                    <p>{{ division.Name }}</p>
+                <div class="col-lg-4 col-sm-12 col-md-12 mt-2 text-center chart-container">
+                    <div class="information-container">
+                        <p>1</p>
+                    </div>
+                    <h3>
+                        <span class="label green badge ">Временно класиране</span>
+                    </h3>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12 text-center align-content-center  chart-container">
+                    <div class="information-container">
+                        <p>EfBet Cup</p>
+                    </div>
                     <div class="fat-percent-div">
                         <h3>
-                            <span class="label green badge fat-percent-badge">Първенство</span>
+                            <span class="green badge fat-percent-badge  label">Първенство</span>
                         </h3>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <div id="container ">
         <div class="row mt-5  justify-content-center">
@@ -49,11 +59,11 @@
                             {%  endif %}
 
                             {% if player.Image == null or player.Image == ' ' %}
-                                <img src="{{asset('images/user1-white2.png')}}" alt="" class="player_img">
+                                <img src="{{asset('images/user-image.png')}}" alt="" class="player-img">
                             {% else %}
-                                <img src="{{asset('images/'~ player.Image )}}" alt="" class="player_img">
+                                <img src="{{asset('images/'~ player.Image )}}" alt="" class="player-img">
                             {% endif %}
-                            <p class="player_name">{{ player.UserId.Name }} {{ player.UserId.FName }}</p>
+                            <p class="player-name">{{ player.UserId.Name }} {{ player.UserId.FName }}</p>
                             <span><i class="fas fa-times country-fa-times players" id="{{ player.Id }}"></i></span>
                         </div>
                     </div>
@@ -83,12 +93,12 @@
 
 
                                 {% if coache.Image == null or coache.Image == ' ' %}
-                                    <img src="{{asset('images/user1-white2.png')}}" alt="" class="player_img">
+                                    <img src="{{asset('images/user1-white2.png')}}" alt="" class="player-img">
                                 {% else %}
-                                    <img src="{{asset('images/'~ coache.Image )}}" alt="" class="player_img">
+                                    <img src="{{asset('images/'~ coache.Image )}}" alt="" class="image">
                                 {% endif %}
 
-                                <p class="player_name">{{ coache.UserId.Name }} {{ coache.UserId.FName }} </p>
+                                <p class="player-name">{{ coache.UserId.Name }} {{ coache.UserId.FName }} </p>
 
                             <span><i class="fas fa-times country-fa-times coaches" id="{{ coache.Id }}"></i></span>
                         </div>
@@ -105,8 +115,8 @@
             </div>
         </div>
     </div>
-    <div class="team-status-container row justify-content-center align-items-center">
-        <div class="col-9  team-status-div row align-items-center justify-content-center" id="add-player" >
+    <div class="player-status-container row justify-content-center align-items-center">
+        <div class="player-status-div col-9  team-status-div row align-items-center justify-content-center" id="add-player" >
             <div class="col-8 row justify-content-center">
                 <h3 class="mb-3 col-12 text-center">Искате ли да изтриете записа:</h3>
                 <button class="btn bg-danger" id="no">Не</button>
@@ -147,8 +157,8 @@
         </div>
     </div>
 
-    <div class="coache-status-container row justify-content-center align-items-center">
-        <div class="col-lg-9 col-sm-10 coache-status-div row align-items-center justify-content-center" id="add-coache" >
+    <div class="player-status-container row justify-content-center align-items-center">
+        <div class="col-lg-9 col-sm-10 player-status-div row align-items-center justify-content-center" id="add-coache" >
             <div class="col-lg-8 col-sm-11 row justify-content-center">
                 <div class="input-group mb-3 col-lg-6 col-sm-12">
                     <input class="effect-2 bg-gray coacheName" type="text"  placeholder="Име..." id="email" aria-label="Email" aria-describedby="basic-addon1" name="_username">

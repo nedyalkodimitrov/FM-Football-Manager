@@ -1,47 +1,20 @@
 @import url('../typography.css');
+@import url('teamsStanding.css');
+@import url('../particles/main-information-charts.css');
+@import url("../particles/navbar.css");
+@import url("waterContainerStyle.css");
+
+
 *{
     transition: 0.2s;
-
-
-}
-
-html{
-    overflow-x: hidden;
 }
 
 body {
-    width: 100%;
-    height: 100%;
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
     background-color: #fff;
-
-    margin: auto;
-}
-
-.logo {
-    width: 70%;
-}
-
-nav {
-    max-width: 1900px;
-    margin: auto;
-}
-nav{
-
-    border-bottom: 1px solid #e7e7e7;
-}
-
-.nav-link {
-    font-size: 1.4em;
-    box-shodow:none;
-    -webkit-box-shadow:none;
-}
-.navbar {
-    box-shodow:none;
-    -webkit-box-shadow:none;
-}
-.nav-link:hover, .current-item{
-    border-bottom: 4px solid #f86954;
+    --table-width: 100%; /* Or any value, this will change dinamically */
 }
 
 
@@ -53,160 +26,19 @@ nav{
     text-align: center;
     padding: 1.5%;
     border: 1px solid #776e6e;
-
-
-}
-
-.div-charts {
-    max-width: 1900px;
-    margin: auto;
-    border:1px solid #dddfe2;
-    /*box-shadow: 1px 1px 1px 1px rgba(89, 88, 89, 0.2);*/
-    border-radius: 5px;
-    height: auto;
-    align-items: center;
-}
-.main-title-tag{
-    display: flex;
-    justify-self: flex-start;
 }
 
 p{
-    margin: 4rem;
-    font-size: 4em;
+    font-size: 3em;
     color: #6c757d;
+
 }
 
 .fa-percent{
     font-size: 0.4em;
-
 }
 
 
-.fat-percent-badge {
-    padding: 5.25px 8.40px;
-}
-
-
-.water-container {
-    border: 1px solid #dddfe2;
-    border-radius: 4px;
-    height: 65%;
-    max-height: 500px;
-    padding: 0px;
-    margin: 0px;
-}
-@media only screen and (max-width: 600px) {
-    .water-container {
-        height: 75%;
-    }
-}
-.water-glass {
-    width: 150px;
-
-}
-
-.water-button {
-    background: none;
-    border: none;
-    padding: 2rem;
-
-
-}
-
-.water-button:active,
-.water-button:focus {
-    outline:  none;
-
-}
-
-#teamLeadership-container{
-    border: none;
-    box-shadow: none;
-}
-.teamTable {
-    border-top: none;
-    border-bottom: 1px solid #DFE1E5;
-
-}
-.teamTable>tr {
-    background-color: white;
-    font-size: 1.2rem;
-    font-family: "Times New Roman";
-    padding: 0.4rem;
-    border-right: none;
-    border-left: none;
-}
-.teamTable>th {
-    font-size: 1.2rem;
-
-}
-.table-bordered td, .table-bordered th{
-    border: none;
-}
-.bg-myGray{
-    background-color: red;
-}
-body {
-    --table-width: 100%; /* Or any value, this will change dinamically */
-}
-table{
-    height: 65%;
-    max-height: 500px;
-}
-tbody {
-    display:block;
-    max-height: 100%;
-    overflow-y:auto;
-
-}
-
-td {
-
-}
-thead, tbody tr {
-    border: none;
-    border-bottom: 1px solid #DFE1E5;
-    color: rgba(0,0,0,.87);;
-    padding: 0px;
-    margin: 0px;
-    display:table;
-    width: var(--table-width);
-    table-layout:fixed;
-
-}
-.table {
-
-    font-size: 3rem;
-    padding: 0px;
-    margin: 0px;
-}
-
-.table>tr {
-    border-right: none;
-    border-left: none;
-}
-
-.min-chart{
-    position: relative;
-    display: inline-block;
-    width: 180px;
-    height: 180px;
-    top: 0.9rem;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.percent{
-    display: inline-block;
-    line-height: 180px;
-    z-index: 2;
-    height: 0px;
-    content: "%";
-    margin-left: .1em;
-    font-size: 4rem;
-    color: #6c757d;
-}
 .settings-navbar > a{
 
     display: block;
@@ -226,39 +58,18 @@ thead, tbody tr {
     border-bottom: none;
     border-left: 4px solid #f86954;
 }
-.arrow-up {
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 0px solid transparent;
-    border-bottom: 20px solid #dddfe2 ;
 
-    position: absolute;
-    display: inline-block;
-
-    margin-top: px;
-}
-.user_profile_img{
-    object-fit: cover;
-    max-width: 90px;
-    border-radius: 100px;
-
-}
-
-
-
-.user_profile_img:hover{
-    box-shadow: 0px 5px 15px gray;
+.user-nav-profile-img:hover, .profile-pic-changer:hover{
+    box-shadow: 0px 3px 18px #9c9c9c;
 }
 
 .coache_image {
-    width: 50%;
-    border-radius: 100px;
+    width: 13em;
+    height: 13em;
+    border-radius: 100%;
     object-fit: cover;
 }
-.trainig-program{
-    border-left: 1px solid gray;
-}
+
 
 .trainig-program-list{
     padding-right: none;
@@ -267,9 +78,6 @@ thead, tbody tr {
 
 .trainig-program-list>th {
     color: white;
-}
-.bg-mycolor {
-    background-color: #f86954;
 }
 
 .taining-program-tr{
@@ -436,7 +244,7 @@ option {
 }
 
 .profile_pic:hover {
-    box-shadow: 0px 10px 20px 2px darkgray;
+    box-shadow: 0px 6px 30px 2px #dadadb;
 }
 
 .color-white {
@@ -446,26 +254,14 @@ option {
     transition: 0.2s;
 }
 
-body {
-    margin:0px;
-    font-family: "Times New Roman"  ;
-}
 
 
-.profile_pic{
-    cursor: pointer;
-    border-radius: 100%;
-    width: 47%;
-    height: auto;
-}
-.profile_pic{
 
-}
-
-.btn  {
+.btn{
     background-color: #fa6b4d;
     border-color: #f94019;
 }
+
 .btn:hover {
     background-color: #f94019;
 }
@@ -485,13 +281,11 @@ body {
 }
 
 .information-input{
-
     border: none;
     border-bottom: 1px solid #ccc;
     border-radius: 0%;
     padding-left:  0px;
     outline-style: none;
-
 }
 
 
@@ -523,9 +317,6 @@ body {
     background-color: #f94019;
 }
 
-.team-status {
-
-}
 
 .vcenter {
     display: inline-block;
@@ -535,7 +326,7 @@ body {
 .user_name{
     display: flex;
     float: left;
-    font-size: 22px;
+    font-size: 1em;
     padding: 0px;
     margin: auto;
     margin-right: 2%;
@@ -562,16 +353,7 @@ body {
         display: flex;
     }
 }
-
-table {
-    height: auto;
-}
-
-tbody>tr{
-    border: 2px solid whitesmoke;
-}
-tr {
-    width: 100%;
-    overflow-wrap: break-word;
+.main-color{
+    background-color: #4DAF50;
 }
 

@@ -291,10 +291,13 @@
 // }]);
 $(function () {
     $('.min-chart#chart-sales').easyPieChart({
-        barColor: "#4caf50",
-        size: 180,
+        barColor: "#fa6b4d",
+        scaleColor: "#dad2da",
+        trackColor: "#dad2da",
+        scaleLength: 5,
+        size: 150,
         onStep: function (from, to, percent) {
-            $(this.el).find('.percent').text(Math.round(percent));
+            $(this.el).find('.chart-text').text(Math.round(percent));
         }
     });
 });

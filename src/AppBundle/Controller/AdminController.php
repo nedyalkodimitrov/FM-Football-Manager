@@ -31,7 +31,7 @@ class AdminController extends Controller
 
         $admin = $this->getUser()->getAdmin();
         $team = $admin->getTeam();
-        $division = $team->getDevision();
+        $division = $team->getDivision();
         $players = $team->getPlayers();
         $coaches = $team->getCoaches();
         $youthTeams = $team->getYouthTeams();

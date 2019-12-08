@@ -9,6 +9,7 @@
 }
 
 .card-header {
+    background-color: #f86954;
     padding: 50px 25px;
     width: 100%;
 }
@@ -20,13 +21,26 @@
 
 .card-header ul li {
     color: white;
-    font-size: 20px;
+    font-size: 1.5em;
     letter-spacing: 3px;
 }
 
 .weekdays {
     margin: 0;
     padding: 10px 0;
+}
+.weekdays > th
+{
+    border-radius: 5px;
+}
+
+tr{
+    border-radius: 15px;
+}
+td
+{
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .days {
@@ -80,12 +94,14 @@
     }
 }
 
-.bg-mycolor{
+.current-day{
     background-color: #f86954;
 }
-.day-hover:hover {
-    background-color: #ff7d11;
+.day:hover {
+    background-color: rgba(248,105,84, 0.9);
 }
+
+
 .active{
 
     cursor: pointer;
@@ -95,6 +111,3 @@
     background-color: white;
 }
 
-.bg-customColor:hover{
-    background-color: rgba(248,105,84, 0.9);
-}

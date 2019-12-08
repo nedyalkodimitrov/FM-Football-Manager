@@ -1,0 +1,59 @@
+table{
+    height: 65%;
+    max-height: 500px;
+    border: none;
+    border-radius: 50% ;
+    height: auto;
+
+}
+
+thead, tbody tr {
+    border: none;
+    border-bottom: 1px solid #DFE1E5;
+    color: rgba(0,0,0,.87);;
+    padding: 0px;
+    margin: 0px;
+    display:table;
+    width: var(--table-width);
+
+}
+
+tbody {
+    display:block;
+    max-height: 100%;
+    overflow-y:auto;
+}
+thead {
+    margin: 0;
+    min-width: 100%;
+}
+
+
+.table-container, .table-container div {
+    padding: 0;
+    margin: 0;
+}
+
+#teamLeadership-container{
+    border: none;
+    box-shadow: none;
+}
+.teamTable {
+    border-top: none;
+    border-bottom: 1px solid #DFE1E5;
+
+}
+.teamTable>tr {
+    background-color: white;
+    padding: 0.4rem;
+    border-right: none;
+    border-left: none;
+}
+
+.teamTable>th {
+    font-size: 1.2em;
+}
+
+.table-bordered td, .table-bordered th{
+    border: none;
+}

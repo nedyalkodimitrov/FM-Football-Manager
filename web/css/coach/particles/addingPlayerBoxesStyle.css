@@ -1,7 +1,7 @@
 .player-container{
-    max-width: 250px;
+    max-width: 15em;
     margin: auto;
-    max-height: 300px;
+    max-height: 18em;
     height: 100%;
     padding: 0px;
     background-color: white;
@@ -12,22 +12,31 @@
 
 }
 
+.player-container:hover:after{
+    opacity: 0.5;
+}
+
+
 .add-player-container {
     cursor: pointer;
     background-color: rgba(255, 105, 84, 0.76);
 }
 
-.player-img{
+.player-img, .image{
     position: relative;
     bottom: 10%;
     width: 100%;
     max-width: 350px;
     object-fit: cover;
-    opacity: 0.7;
+    opacity: 0.8;
     cursor: pointer;
     margin-top: 35%;
     transition: all 0.3s ease;
     transform: scale(1.2, 1.2);
+}
+.image {
+    top: -20%;
+    bottom: 0%;
 }
 
 .add-player-img {
@@ -39,18 +48,21 @@
 }
 
 
-.player-img:hover{
+.player-img:hover, .image{
     opacity: 1;
 }
 .player-name {
     position: absolute;
-    top: 70%;
-    left: 5%;
-    width: 96%;
+    top: 55%;
     font-size: 1.4em;
-    padding: 3%;
+    padding-left: 5%;
+    padding-top: 1.6em;
     color: white;
     font-family: sans-serif;
+    background: linear-gradient(360deg, rgba(0,0,0, 0.4 ) , rgba(0,0,0, 0.0));
+    width: 100%;
+    height: 45%;
+    text-shadow: 1px 0 0 #3f3f3f, 0 -1px 0 #3f3f3f, 0 1px 0 #3f3f3f, -1px 0 0 #3f3f3f;
 }
 .player-position{
     position: absolute;

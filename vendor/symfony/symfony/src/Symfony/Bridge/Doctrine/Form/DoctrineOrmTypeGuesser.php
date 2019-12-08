@@ -90,7 +90,7 @@ class DoctrineOrmTypeGuesser implements FormTypeGuesserInterface
         $classMetadatas = $this->getMetadata($class);
 
         if (!$classMetadatas) {
-            return;
+            return null;
         }
 
         /** @var ClassMetadataInfo $classMetadata */
@@ -118,6 +118,8 @@ class DoctrineOrmTypeGuesser implements FormTypeGuesserInterface
 
             return new ValueGuess(!$mapping['joinColumns'][0]['nullable'], Guess::HIGH_CONFIDENCE);
         }
+
+        return null;
     }
 
     /**
@@ -137,6 +139,8 @@ class DoctrineOrmTypeGuesser implements FormTypeGuesserInterface
                 return new ValueGuess(null, Guess::MEDIUM_CONFIDENCE);
             }
         }
+
+        return null;
     }
 
     /**
@@ -150,6 +154,8 @@ class DoctrineOrmTypeGuesser implements FormTypeGuesserInterface
                 return new ValueGuess(null, Guess::MEDIUM_CONFIDENCE);
             }
         }
+
+        return null;
     }
 
     protected function getMetadata($class)
@@ -157,7 +163,7 @@ class DoctrineOrmTypeGuesser implements FormTypeGuesserInterface
         // normalize class name
         $class = ClassUtils::getRealClass(ltrim($class, '\\'));
 
-        if (array_key_exists($class, $this->cache)) {
+        if (\array_key_exists($class, $this->cache)) {
             return $this->cache[$class];
         }
 
@@ -171,5 +177,7 @@ class DoctrineOrmTypeGuesser implements FormTypeGuesserInterface
                 // not an entity or mapped super class, using Doctrine ORM 2.2
             }
         }
+
+        return null;
     }
 }

@@ -1,0 +1,35 @@
+@import url("../typography.css");
+
+.player-container{
+    position: relative;
+    box-sizing: border-box;
+}
+.status-red,
+.status-green
+{
+    left: 3%;
+}
+
+.country-fa-times{
+    color: white;
+    text-shadow: 2px 0 0 #3f3f3f, 0 -2px 0 #3f3f3f, 0 2px 0 #3f3f3f, -2px 0 0 #3f3f3f;
+    position: absolute;
+    font-size: 25px;
+    right: 3%;
+    top: 2%;
+    cursor: pointer;
+    transition: 0.35s all ease;
+
+}
+.country-fa-times:hover {
+    color: black;
+    text-shadow: 2px 0 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000;
+}
+.information-container > p {
+    font-size: 2em;
+    margin:0;
+    top: 0%;
+    left: 0%;
+    transform: translate(0%, 0%);
+}
+

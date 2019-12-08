@@ -103,7 +103,7 @@ function showCalendar(month, year) {
                 if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
                     cell.classList.add("active");
                     cell.classList.add("text-white");
-                    cell.classList.add("bg-mycolor");
+                    cell.classList.add("current-day");
                     cell.classList.add("today");
                     cell.classList.add("text-center");
                     cell.classList.add("font-weight-bold");
@@ -121,9 +121,8 @@ function showCalendar(month, year) {
                     cell.setAttribute('disabled', 'disabled');
                 } else if (date >= today.getDate() && year >= today.getFullYear() && month >= today.getMonth()) {
                     cell.classList.add("active");
-                    cell.classList.add("text-dark");
                     cell.classList.add("bg-customColor");
-                    cell.classList.add("day-hover");
+                    cell.classList.add("day");
                     cell.classList.add("text-center");
                     cell.classList.add("font-weight-bold");
                     cell.setAttribute('data-day', date);

@@ -1,0 +1,47 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font: 16px/1.5 "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+}
+body, form, input, select, option, p, a, span  {
+    font: inherit;
+}
+
+h1 {
+    font-size: 3.5em;
+    font-weight: 500;
+}
+h2{font-size: 3em}
+h3{font-size: 2.7em}
+h4{font-size: 2.0em}
+h5{font-size: 1.5em}
+h6{font-size: 1.1em}
+
+blockquote  {
+    padding: 1em;
+    font-style: italic;
+    opacity: 0.8;
+    font-family: sans-serif;
+
+}
+
+blockquote p:last-child{
+    padding: 0;
+    padding-left: 35rem;
+}
+
+@media only screen and (max-width: 768px) {
+    html {
+        font: 10px/1.5 "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    html {
+        font: 8px/1.5 "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+    }
+}

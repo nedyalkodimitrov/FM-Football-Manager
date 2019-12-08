@@ -6,6 +6,7 @@ use AppBundle\Entity\PlayerProperties\PlayerStats;
 use AppBundle\Entity\PlayerProperties\Positions;
 use AppBundle\Entity\PlayerProperties\WaterGlasses;
 use AppBundle\Entity\Players;
+use AppBundle\Entity\Teams;
 use AppBundle\Entity\Users;
 use AppBundle\Form\PlayerProperties\PlayerStatsType;
 use AppBundle\Form\PlayersType;
@@ -18,6 +19,7 @@ use AppBundle\Form\PlayersInjuredType;
 use AppBundle\Repository\PlayerProperties\WaterGlassesRepository;
 use AppBundle\Repository\PlayersInjuredRepository;
 use AppBundle\Repository\PlayersRepository;
+use AppBundle\Repository\TeamsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -49,7 +51,7 @@ class PlayerController extends Controller
         $playerTeam = $this->playerPropService->getTeam($player);
         if ($playerTeam != null) {
             $teams = $this->playerPropService->getTeams($playerTeam->getDivision());
-            $hasTeam = treu;
+            $hasTeam = true;
         }else {
             $teams = null;
             $hasTeam = false;
@@ -143,6 +145,7 @@ class PlayerController extends Controller
                     'formPlayer' => $formPlayer->createView(),
                     'formStats' => $formStats->createView(),
                     'player' => $currentPlayer,
+                    'team' => $this->playerPropService->getTeam($currentPlayer),
                     'playerStats' => $playerStats,
                     'playerName' => $currentPlayer->getUserId()->getName(). ' '.$currentPlayer->getUserId()->getFName()
                 ));
@@ -155,6 +158,7 @@ class PlayerController extends Controller
                 "image" => $currentPlayer->getImage(),
                 'profile_img' =>$currentPlayer->getImage(),
                 'player' => $currentPlayer,
+                'team' => $this->playerPropService->getTeam($currentPlayer),
                 'playerStats' => $playerStats,
                 'playerName' => $currentPlayer->getUserId()->getName(). ' '.$currentPlayer->getUserId()->getFName()
             ));
@@ -235,6 +239,23 @@ class PlayerController extends Controller
         $em->persist($player);
         $em->flush();
         return $this->redirectToRoute('playerView');
+    }
+
+    /**
+     * @Route("/player/searchTeam/{name}", )
+     */
+    public function searchTeam($name, TeamsRepository $teamsRepository){
+        $teamsInformation = [];
+        $teams = $teamsRepository->getTeamsByName($name);
+        for ($i = 0; $i < count($teams); $i++){
+            $currentTeam = $teams[$i];
+            array_push($teamsInformation, array($currentTeam->getId(), $currentTeam->getName()));
+        }
+        return $this->json($teamsInformation);
+    }
+
+    private  function getPropFromRequest($prop, Request $request){
+        return json_decode($request->request->get($prop));
     }
 
 

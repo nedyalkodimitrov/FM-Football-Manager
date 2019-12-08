@@ -23,4 +23,16 @@ class TeamsRepository extends \Doctrine\ORM\EntityRepository
         return $this->_em->getRepository(Teams::class)->findBy(['division' => $divisionId], ['points' => 'DESC']);
     }
 
+    public function getTeamsByName($name){
+        $teams = $this->_em
+            ->createQuery(
+                'SELECT p
+                FROM AppBundle:Teams p
+                WHERE p.name LIKE :name
+                ORDER BY p.name ASC'
+             )->setParameter('name', "%".$name."%")->getResult();
+            return $teams;
+    }
+
+
 }

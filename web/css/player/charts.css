@@ -1,0 +1,78 @@
+.main-charts-container {
+    box-sizing: border-box;
+    max-width: 1900px;
+    margin: auto;
+    border:1px solid #dddfe2;
+    /*box-shadow: 1px 1px 1px 1px rgba(89, 88, 89, 0.2);*/
+    border-radius: 15px;
+    height: auto;
+    align-items: center;
+}
+.chart-container, .min-chart{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+canvas{
+    height: 10em;
+    width: 10em;
+}
+.chart-container {
+
+    flex-flow: column;
+    box-sizing: border-box;
+}
+
+.information-charts-text {
+    font-style: normal;
+}
+
+.chart-text, .percent, .overall, .speed{
+    z-index: 2;
+    color: #6c757d;
+}
+.badge{
+    border-radius: 5px;
+    font-size: 1.7em;
+    padding: 0.4rem;
+    margin: 1rem 0 1rem 0;
+}
+.chart-text{
+    position: absolute;
+    font-size: 2.5em;
+}
+
+.percent::after{
+    font-size: 0.5em;
+    content: "%";
+}
+
+.overall::after {
+    display: block;
+    font-size: 0.5em;
+    content: "OVR";
+}
+
+.speed::after{
+    display: block;
+    font-size: 0.5em;
+    content: "KM/H";
+}
+
+i {
+    font-size: 1em;
+}
+
+.information-container {
+   flex-grow: 2;
+}
+
+.information-container p{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.fa-percent{
+    font-size: 0.4em;
+}
